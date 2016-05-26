@@ -1,6 +1,6 @@
-State,Date,Total.Delegates,Delegates.Trump,Delegates.Cruz,Delegates.Rubio,Delegates.Kasich,Type,Delegate.Allocation,Open.or.Closed,Popular.Trump,Popular.Cruz,Popular.Rubio,Popular.Kasich
-New Hampshire,9-Feb,23,11,3,2,4,Primary,Proportional*,Open**,"100,406","33,189","30,032","44,909"
+State,date,total,trump,Delegates.Cruz,Delegates.Rubio,Delegates.Kasich,Type,Delegate.Allocation,Open.or.Closed,Popular.Trump,Popular.Cruz,Popular.Rubio,Popular.Kasich
 Iowa,1-Feb,30,7,8,7,1,Caucus,Proportional,Closed,"45,427","51,666","43,165","3,474"
+New Hampshire,9-Feb,23,11,3,2,4,Primary,Proportional*,Open**,"100,406","33,189","30,032","44,909"
 South Carolina,20-Feb,50,50,0,0,0,Primary,Winner Take All_,Open,"239,851","164,790","165,881","56,206"
 Nevada,23-Feb,30,14,6,7,1,Caucus,Proportional,Closed,"34,531","16,079","17,940","2,709"
 Alabama,1-Mar,50,36,13,1,0,Primary,Proportional*#_,Open,"371,735","180,608","159,802","37,970"
