@@ -1,0 +1,12 @@
+dist
+node_modules
+.DS_Store
+.idea
+*.iml
+typings
+.idea-out
+
+src/**/*.js
+src/**/*.js.map
+tools/**/*.js
+tools/**/*.js.map
