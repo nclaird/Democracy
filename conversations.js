@@ -51,9 +51,20 @@ $( document )
        *
        * **/
 
+
+      /*
+      * USER_ALG = {
+      *
+      * }
+      *
+      *
+      * */
+
       d3.json( 'assets/data.json', function (err, data) {
 
-        var streams = prepData( data );
+        var streams = prepData( data ),
+            ALG = [ ];
+
 
         toX.domain( [ d3.min( d3.values( streams ), function (stream) {
           return d3.min( stream.values, function (d) {return d.date} );
@@ -61,19 +72,29 @@ $( document )
           return d3.max( stream.values, function (d) {return d.date} );
         } ) ] );
 
-
         OFFICIAL = svg.append('g')
             .attr('class', 'official')
            .append('path')
                 .attr( "d", curve(streams.official.values));
+        
 
 
       } );
 
+
+      function recalculateAggregateStream() {
+    
+        
+        
+        
+
+
+      }
+
+
       function prepData(data) {
 
         var returnVal = {};
-
 
         _.forOwn( data.streams, function (entries, key) {
 
@@ -97,15 +118,9 @@ $( document )
         return returnVal;
       }
 
-      function mergeStreams(toMerge, mergeInto, weight) {
 
-      }
 
-      function drawStream(stream) {
-        var g = svg.append( 'g' )
-                   .attr( 'class', '.stream-' + stream.name );
-      }
-
+      
 
     } );
 

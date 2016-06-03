@@ -37,13 +37,32 @@ html, body {
   flex-shrink: 0;
   background-color: #e1e1e1;
   border-right: 1px solid #999999;
-
 }
 
 .control-bar > div {
-  margin: 10px 40px 10px 20px;
-  font-size: 1.2em;
 }
+
+.entry .weight-input {
+  display: none;
+}
+
+.entry.active .weight-input {
+  display: visible;
+}
+
+
+.entry {
+
+  display: flex;
+  justify-content: space-between;
+
+}
+
+.entry .title {
+
+}
+
+
 
 .target {
   flex-grow: 2;
