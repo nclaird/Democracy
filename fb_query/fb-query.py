@@ -1,7 +1,8 @@
 #requires facepy
+# Greg Biles for CMPS165 at UCSC
+
 from facepy import GraphAPI
 import json, requests, os, csv
-from collections import OrderedDict
 
 # FACEBOOK OAUTH / TOKEN REFRESH
 def get_token(client_id, client_secret):
@@ -34,7 +35,7 @@ timeline = [
 # create file, query api, translate, zip, output
 for profile in candidates.items():
 	file = '{}.json'.format(profile[0])
-	if not os.path.exists(file):
+	if not os.path.exists('./fb-data/', file):
 		open(file, 'w').close()
 	with open(file, 'a') as f:
 		can_dict = final_dict = {}
@@ -43,9 +44,6 @@ for profile in candidates.items():
 			ext_data = raw_data["data"][0]["values"]
 			for i in range(0, len(ext_data)):
 				intl = ext_data[i]["value"]
-				can_dict[ext_data[i]["end_time"][:10]] = sum(intl.values())
-		can_dict = sorted(can_dict.items(), key=lambda t:t[0])
-		#for x in range(1, len(can_dict)-1):
-			#if not x%7: can_dict.pop(x)
+				can_dict[ext_data[i]["end_time"][:10]] = intl["US"]
+		can_dict = sorted(can_dict.items(), key=lambda t:t[0]) # sorts by date
 		f.write(json.dumps(can_dict))
-print('done')
