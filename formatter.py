@@ -15,10 +15,6 @@ output = {
 
 
 for entry in data:
-    output["streams"]["facebook"].append({
-        "date": entry[0],
-        "value": entry[1]
-    })
 
     for stream in streams:
         streams[stream] = random.randint(max(0, streams[stream]-10), min(streams[stream]+10, 100))
