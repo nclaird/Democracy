@@ -56,7 +56,7 @@ html, body {
   transition: 150ms linear all;
 }
 
-.weight .active {
+.weight.active {
   max-width: 25px;
   opacity: 1;
 }

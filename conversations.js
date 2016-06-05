@@ -72,13 +72,19 @@ $( document )
           /**
            * add hover listeners
            */
-          $( '.' + streamName + '.entry' )
+          $( '.' + streamName + '.entry .title' )
               .click( function () {
-
+      debugger;
                 if (isCurrentlySelected( streamName )) {
-                  SELECTED_COMPONENTS.push( {stream: streamName, weight: 1} );
+                  SELECTED_COMPONENTS = SELECTED_COMPONENTS.filter( function (entry) { return entry.stream !== streamName} );
+                  $( '.weight.' + streamName )
+                      .removeClass( 'active' )
+
                 } else {
-                  SELECTED_COMPONENTS = SELECTED_COMPONENTS.filter( function (entry) { return entry.name !== streamName} );
+                  SELECTED_COMPONENTS.push( {stream: streamName, weight: 1} );
+
+                  $( '.weight.' + streamName )
+                      .addClass( 'active' )
                 }
 
                 redrawAggregateStream();
@@ -92,11 +98,14 @@ $( document )
 
         function redrawAggregateStream() {
 
+          
+          
+          
         }
 
 
         function isCurrentlySelected(stream) {
-          return _.some( SELECTED_COMPONENTS, function (cmp) { return cmp.name === stream} );
+          return _.some( SELECTED_COMPONENTS, function (cmp) { return cmp.stream === stream} );
         }
 
 
