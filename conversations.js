@@ -37,9 +37,11 @@ $( document )
 
       d3.json( 'assets/data.json', function (err, data) {
 
-        var streams = prepData( data ),
-            ALG = [];
+        var streams = prepData( data );
 
+        svg.append( 'g' )
+            .attr( 'class', 'aggregate' )
+            .append( 'path' );
 
         toX.domain( [ d3.min( d3.values( streams ), function (stream) {
           return d3.min( stream.values, function (d) {return d.date} );
@@ -95,20 +97,59 @@ $( document )
 
 
         function redrawAggregateStream() {
+          //TODO we want to do an attrtween to animate  this instead of removing / redrawing
+          svg.selectAll( '.aggregate' )
+             .remove();
+          
           if (SELECTED_COMPONENTS.length == 0) {
-            svg.selectAll( '.agg-line' )
-               .remove();
             return;
           }
-         // var maps = SELECTED_COMPONENTS.map(entry, )
+
+         var vals = {};
 
           SELECTED_COMPONENTS.forEach( function (entry, idx) {
             streams[ entry.stream ].values.forEach( function (val) {
-              if (!vals.hasOwnProperty(val.date.toString())){
-
+              if (!vals.hasOwnProperty(val.date)){
+                vals[val.date] = {
+                  date: val.date,
+                  nums: []
+                };
               }
+              vals[val.date].nums.push(val.value);
             } )
-          } )
+          } );
+
+          var result = _.transform(vals, function(result, entry, date){
+            var avg = _.reduce(entry.nums, function(sum, val){ return sum + val}) / entry.nums.length;
+
+                result.push({
+                  date: entry.date,
+                  value: avg
+                            });
+
+            return result;
+          }, []);
+
+
+          var min = d3.min( result, function (d) { return d.value } ),
+              max = d3.max( result, function (d) { return d.value } ),
+              normalize = d3.scale.linear()
+                            .domain( [ min, max ] )
+                            .range( [ 0, 1 ] );
+
+
+          result.forEach(function(entry){
+            entry.normValue = normalize(entry.value);
+          });
+
+          svg.append('g').attr('class', 'aggregate')
+             .append('path')
+             .attr( "d", curve( result ) );
+
+
+          debugger;
+
+
 
 
         }

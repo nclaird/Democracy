@@ -147,3 +147,7 @@ path {
   stroke: #03C03C;
 }
 
+.aggregate path {
+  stroke: #444;
+  stroke-width: 2;
+}
