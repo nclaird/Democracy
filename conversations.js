@@ -19,6 +19,7 @@ $( document )
                   .range( [ 0, svgHt ] ),
 
           target = d3.select( '.target' ),
+
           svg = target.append( 'svg' )
                       .attr( 'height', svgHt )
                       .attr( 'width', svgWid ),
@@ -28,37 +29,10 @@ $( document )
           curve = d3.svg.line()
                     .interpolate( "cardinal" )
                     .x( function (d) { return toX( d.date ); } )
-                    .y( function (d) { return toY( d.normValue ); } ),
+                    .y( function (d) { return toY( d.normValue ); } );
 
 
-          OFFICIAL,
-          AGGREGATE;
 
-
-      /**
-       * Data shape:
-       {
-         streams: [
-         {
-           name: Twitter
-           values: [ {date, num}  ]
-
-         }
-
-         ]
-
-      * }
-       *
-       * **/
-
-
-      /*
-      * USER_ALG = {
-      *
-      * }
-      *
-      *
-      * */
 
       d3.json( 'assets/data.json', function (err, data) {
 
@@ -72,21 +46,42 @@ $( document )
           return d3.max( stream.values, function (d) {return d.date} );
         } ) ] );
 
-        OFFICIAL = svg.append('g')
-            .attr('class', 'official')
-           .append('path')
-                .attr( "d", curve(streams.official.values));
-        
+
+        _.forOwn(streams, function(streamData, streamName){
+
+
+          svg.append( 'g' )
+             .attr( 'class', streamName )
+             .append( 'path' )
+             .attr( "d", curve( streamData.values ) );
+
+
+          /**
+           * add hover listeners
+           */
+          $( '.' + streamName + '.entry' ).hover( function () {
+          $( '.' + streamName + '.entry' ).hover( function () {
+                $( 'g.' + streamName )
+                    .addClass( 'active' );
+              }, function () {
+                $( 'g.' + streamName )
+                    .removeClass( 'active' );
+              } );
+        });
+
+
 
 
       } );
 
 
       function recalculateAggregateStream() {
-    
-        
-        
-        
+
+      }
+
+      function addListeners(){
+
+
 
 
       }

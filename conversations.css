@@ -7,15 +7,18 @@ html, body {
   min-height: 100%;
   font-family: 'Raleway';
   font-size: 18px;
+  margin: 0;
+  background-color: #efefef;
+
 }
 
 .heading {
-  height: 65px;
+  height: 40px;
   display: flex;
   flex-shrink: 0;
   justify-content: center;
   align-items: center;
-  border-bottom: 1px solid #888;
+  border-bottom: rgba(0,0,0,0.2);
 
 }
 
@@ -34,20 +37,27 @@ html, body {
 .control-bar {
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
   flex-shrink: 0;
-  background-color: #e1e1e1;
   border-right: 1px solid #999999;
+  padding: 10px 20px;
 }
 
 .control-bar > div {
+  padding: 5px;
+
 }
 
-.entry .weight-input {
-  display: none;
+.weight {
+  max-width: 0;
+  opacity: 0;
+  transition: 150ms linear all;
 }
 
-.entry.active .weight-input {
-  display: visible;
+.weight .active {
+  max-width: 25px;
+  opacity: 1;
 }
 
 
@@ -105,10 +115,8 @@ path {
   transition: 300ms ease-out opacity;
 }
 
-.twitter path:hover, .facebook path {
-  stroke-width: 2;
-  opacity: 0;
-  transition: 300ms ease-out opacity;
+.twitter.active path, .facebook.active path {
+  opacity: 1;
 }
 
 .twitter path {
