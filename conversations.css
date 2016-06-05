@@ -9,6 +9,7 @@ html, body {
   font-size: 18px;
   margin: 0;
   background-color: #efefef;
+  overflow: hidden;
 
 }
 
@@ -65,13 +66,23 @@ html, body {
 
   display: flex;
   justify-content: space-between;
+  cursor: pointer;
+}
+
+.title.twitter:hover {
+  color: #468eff
 
 }
 
-.entry .title {
+.title.facebook:hover {
+  color: #5503ff
 
 }
 
+.title.donations:hover {
+  color: #03C03C;
+
+}
 
 
 .target {
@@ -109,14 +120,19 @@ path {
   stroke-width: 3;
 }
 
-.twitter path, .facebook path {
+.twitter path, .facebook path, .donations path {
   stroke-width: 2;
   opacity: 0;
   transition: 300ms ease-out opacity;
 }
 
-.twitter.active path, .facebook.active path {
-  opacity: 1;
+.twitter.active path,
+.facebook.active path,
+.donations.active path,
+.twitter.locked path,
+.facebook.locked path,
+.donations.locked path {
+  opacity: 0.65;
 }
 
 .twitter path {
@@ -124,11 +140,10 @@ path {
 }
 
 .facebook path {
-  stroke: #2721ff
+  stroke: #5503ff
 }
 
-path.twitter:hover, path.facebook:hover {
-  opacity: 1;
+.donations path {
+  stroke: #03C03C;
 }
-
 

@@ -1,8 +1,9 @@
 $( document )
     .ready( function () {
 
-
-      var margin = {top: 5, right: 5, bottom: 5, left: 5},
+      var
+          margin = {top: 55, right: 10, bottom: 15, left: 10},
+          padding = 10,
           windowWid = $( '.target' )
               .width(),
           windowHt = $( '.target' )
@@ -21,23 +22,23 @@ $( document )
           target = d3.select( '.target' ),
 
           svg = target.append( 'svg' )
-                      .attr( 'height', svgHt )
-                      .attr( 'width', svgWid ),
+                      .attr( 'height', svgHt - padding )
+                      .attr( 'width', svgWid - padding ),
 
           dateFormat = d3.time.format( '%Y-%m-%d' ),
 
           curve = d3.svg.line()
                     .interpolate( "cardinal" )
                     .x( function (d) { return toX( d.date ); } )
-                    .y( function (d) { return toY( d.normValue ); } );
+                    .y( function (d) { return toY( d.normValue ); } ),
 
-
+          SELECTED_COMPONENTS = [];
 
 
       d3.json( 'assets/data.json', function (err, data) {
 
         var streams = prepData( data ),
-            ALG = [ ];
+            ALG = [];
 
 
         toX.domain( [ d3.min( d3.values( streams ), function (stream) {
@@ -47,7 +48,7 @@ $( document )
         } ) ] );
 
 
-        _.forOwn(streams, function(streamData, streamName){
+        _.forOwn( streams, function (streamData, streamName) {
 
 
           svg.append( 'g' )
@@ -59,63 +60,79 @@ $( document )
           /**
            * add hover listeners
            */
-          $( '.' + streamName + '.entry' ).hover( function () {
+          $( '.' + streamName + '.entry' )
+              .hover( function () {
                 $( 'g.' + streamName )
                     .addClass( 'active' );
               }, function () {
                 $( 'g.' + streamName )
                     .removeClass( 'active' );
               } );
-        });
+
+          /**
+           * add hover listeners
+           */
+          $( '.' + streamName + '.entry' )
+              .click( function () {
+
+                if (isCurrentlySelected( streamName )) {
+                  SELECTED_COMPONENTS.push( {stream: streamName, weight: 1} );
+                } else {
+                  SELECTED_COMPONENTS = SELECTED_COMPONENTS.filter( function (entry) { return entry.name !== streamName} );
+                }
+
+                redrawAggregateStream();
+
+              } );
 
 
+        } );
+
+      });
+
+        function redrawAggregateStream() {
+
+        }
+
+
+        function isCurrentlySelected(stream) {
+          return _.some( SELECTED_COMPONENTS, function (cmp) { return cmp.name === stream} );
+        }
+
+
+        function addListeners() {
+
+
+        }
+
+
+        function prepData(data) {
+
+          var returnVal = {};
+
+          _.forOwn( data.streams, function (entries, key) {
+
+            var min = d3.min( entries, function (d) { return d.value } ),
+                max = d3.max( entries, function (d) { return d.value } ),
+                normalize = d3.scale.linear()
+                              .domain( [ min, max ] )
+                              .range( [ 0, 1 ] );
+
+            returnVal[ key ] = {
+              title : key,
+              values: _.map( entries, function (entry) {
+                return {
+                  value    : entry.value,
+                  normValue: normalize( entry.value ),
+                  date     : dateFormat.parse( entry.date )
+                }
+              } )
+            }
+          } );
+          return returnVal;
+        }
 
 
       } );
-
-
-      function recalculateAggregateStream() {
-
-      }
-
-      function addListeners(){
-
-
-
-
-      }
-
-
-      function prepData(data) {
-
-        var returnVal = {};
-
-        _.forOwn( data.streams, function (entries, key) {
-
-          var min = d3.min( entries, function (d) { return d.value } ),
-              max = d3.max( entries, function (d) { return d.value } ),
-              normalize = d3.scale.linear()
-                            .domain( [ min, max ] )
-                            .range( [ 0, 1 ] );
-
-          returnVal[ key ] = {
-            title : key,
-            values: _.map( entries, function (entry) {
-              return {
-                value    : entry.value,
-                normValue: normalize( entry.value ),
-                date     : dateFormat.parse( entry.date )
-              }
-            } )
-          }
-        } );
-        return returnVal;
-      }
-
-
-
-      
-
-    } );
 
 
