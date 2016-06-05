@@ -70,11 +70,10 @@ $( document )
               } );
 
           /**
-           * add hover listeners
+           * add click listeners
            */
           $( '.' + streamName + '.entry .title' )
               .click( function () {
-      debugger;
                 if (isCurrentlySelected( streamName )) {
                   SELECTED_COMPONENTS = SELECTED_COMPONENTS.filter( function (entry) { return entry.stream !== streamName} );
                   $( '.weight.' + streamName )
@@ -94,14 +93,30 @@ $( document )
 
         } );
 
-      });
 
         function redrawAggregateStream() {
+          if (SELECTED_COMPONENTS.length == 0) {
+            svg.selectAll( '.agg-line' )
+               .remove();
+            return;
+          }
+         // var maps = SELECTED_COMPONENTS.map(entry, )
 
-          
-          
-          
+          SELECTED_COMPONENTS.forEach( function (entry, idx) {
+            streams[ entry.stream ].values.forEach( function (val) {
+              if (!vals.hasOwnProperty(val.date.toString())){
+
+              }
+            } )
+          } )
+
+
         }
+
+
+      });
+
+
 
 
         function isCurrentlySelected(stream) {
