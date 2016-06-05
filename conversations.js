@@ -60,7 +60,6 @@ $( document )
            * add hover listeners
            */
           $( '.' + streamName + '.entry' ).hover( function () {
-          $( '.' + streamName + '.entry' ).hover( function () {
                 $( 'g.' + streamName )
                     .addClass( 'active' );
               }, function () {
