@@ -2,31 +2,26 @@ import json
 import random
 import math
 
-data = json.load(open('fb_query/fb-data/trump.json'))
+data = json.load(open('data/aggregate/trump_7day.json'))
 
-streams = {s: 0 for s in ['official', 'twitter', 'facebook', 'donations']}
 
-output = {
-    "streams": {stream: [] for stream in streams}
-}
+streams = {s: [] for s in ['official', 'twitter', 'facebook', 'google', 'donations']}
 
 
 
+for date in data:
 
+    for stream in data[date]:
 
-for entry in data:
-
-    for stream in streams:
-        streams[stream] = random.randint(max(0, streams[stream]-10), min(streams[stream]+10, 100))
-        output["streams"][stream].append({
-            "date": entry[0],
-            "value": streams[stream]
+        streams[stream].append({
+            "date": date,
+            "value": data[date][stream]
         })
 
 
 
 
-f = open('data.json', 'w+')
-json.dump(output, f)
+f = open('finalData.json', 'w+')
+json.dump({"streams": streams}, f)
 
 f.close()
