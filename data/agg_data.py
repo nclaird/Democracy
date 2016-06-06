@@ -39,7 +39,7 @@ for candidate in candidates:
                 for (k, v) in row.items():
                     columns[k].append(v)
             for i in range(0, len(columns["Week"])):
-                data[columns["Week"][i][13:28]] = {"Google": int(columns["trump"][i])}
+                data[columns["Week"][i][13:28]] = {"Google": int(columns["{}".format(candidate)][i])}
 
         # appends facebook info in terms of total stories created about specified candidate
         # in the united states over past 7 day period
@@ -53,15 +53,15 @@ for candidate in candidates:
         # appends twitter info in terms of aggregate retweets for given candidate over
         # previous 7 day period
         with open('./twitter/twitter-data/{}-twtr.json'.format(candidate)) as t:
-            t_data = json.load(t)
-            for item in t_data:
+            twitter_data = json.load(t)
+            for item in twitter_data:
                 if item[0] in data.keys():
-                    current = t_data.index(item)
-                    rt_thisweek = 0
-                    for i in range(current, current - 6):
-                        if t_data[current]:
-                            rt_thisweek += int(t_data[i][1])
-                    data[item[0]]["Twitter"] = rt_thisweek
+                    current = twitter_data.index(item)
+                    retweets_thisweek = 0
+                    for i in range(current-6, current):
+                        if twitter_data[i]:
+                            retweets_thisweek += int(twitter_data[i][1])
+                    data[item[0]]["Twitter"] = retweets_thisweek
 
         # appends total accumulated donations over specified period using:
         # source: http://www.fec.gov/disclosurep/PDownload.do (FEC)
