@@ -27,6 +27,7 @@ candidates = {
 
 # query only accepts 90 day intervals 
 timeline = [
+	('2016-05-01', '2016-06-05'),
 	('2016-02-01', '2016-04-30'),
 	('2015-11-01', '2016-01-31'),
 	('2015-08-01', '2015-10-31'),
@@ -35,15 +36,15 @@ timeline = [
 # create file, query api, translate, zip, output
 for profile in candidates.items():
 	file = '{}.json'.format(profile[0])
-	if not os.path.exists('./fb-data/', file):
+	if not os.path.exists(file):
 		open(file, 'w').close()
 	with open(file, 'a') as f:
 		can_dict = final_dict = {}
 		for date in timeline:
 			raw_data = graph.get('{}/insights/page_storytellers_by_country/week?debug=all&method=get&pretty=0&since={}&suppress_http_code=1&until={}'.format(profile[1], date[0], date[1]))
 			ext_data = raw_data["data"][0]["values"]
-			for i in range(0, len(ext_data)):
-				intl = ext_data[i]["value"]
+			for i in range(0, len(ext_data)-1):
+				intl = ext_data[i]['value']
 				can_dict[ext_data[i]["end_time"][:10]] = intl["US"]
 		can_dict = sorted(can_dict.items(), key=lambda t:t[0]) # sorts by date
 		f.write(json.dumps(can_dict))
