@@ -6,8 +6,9 @@
 import csv
 import json
 import os
+import pandas as pd
+from dateutil import parser as dtp
 from collections import defaultdict
-
 
 # takes input from each 'variable' source file and returns
 # json dict with aggregate data per 7day period 
@@ -36,10 +37,7 @@ for candidate in candidates:
         with open('./google/{}-google.csv'.format(candidate)) as dates:
             info = csv.DictReader(dates)
             for row in info:
-                for (k, v) in row.items():
-                    columns[k].append(v)
-            for i in range(0, len(columns["Week"])):
-                data[columns["Week"][i][13:28]] = {"Google": int(columns["{}".format(candidate)][i])}
+                data[row["Week"][13:28]] = {"Google": int(row["{}".format(candidate)])}
 
         # appends facebook info in terms of total stories created about specified candidate
         # in the united states over past 7 day period
@@ -114,4 +112,5 @@ for candidate in candidates:
 
         f.write(json.dumps(data))
         print("Finished aggregation for: " + candidate + " ...")
+
     f.close()
