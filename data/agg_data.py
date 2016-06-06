@@ -6,8 +6,9 @@
 import csv
 import json
 import os
+import pandas as pd
+from dateutil import parser as dtp
 from collections import defaultdict
-
 
 # takes input from each 'variable' source file and returns
 # json dict with aggregate data per 7day period 
@@ -36,10 +37,7 @@ for candidate in candidates:
         with open('./google/{}-google.csv'.format(candidate)) as dates:
             info = csv.DictReader(dates)
             for row in info:
-                for (k, v) in row.items():
-                    columns[k].append(v)
-            for i in range(0, len(columns["Week"])):
-                data[columns["Week"][i][13:28]] = {"Google": int(columns["trump"][i])}
+                data[row["Week"][13:28]] = {"Google": int(row["{}".format(candidate)])}
 
         # appends facebook info in terms of total stories created about specified candidate
         # in the united states over past 7 day period
@@ -53,15 +51,15 @@ for candidate in candidates:
         # appends twitter info in terms of aggregate retweets for given candidate over
         # previous 7 day period
         with open('./twitter/twitter-data/{}-twtr.json'.format(candidate)) as t:
-            t_data = json.load(t)
-            for item in t_data:
+            twitter_data = json.load(t)
+            for item in twitter_data:
                 if item[0] in data.keys():
-                    current = t_data.index(item)
-                    rt_thisweek = 0
-                    for i in range(current, current - 6):
-                        if t_data[current]:
-                            rt_thisweek += int(t_data[i][1])
-                    data[item[0]]["Twitter"] = rt_thisweek
+                    current = twitter_data.index(item)
+                    retweets_thisweek = 0
+                    for i in range(current-6, current):
+                        if twitter_data[i]:
+                            retweets_thisweek += int(twitter_data[i][1])
+                    data[item[0]]["Twitter"] = retweets_thisweek
 
         # appends total accumulated donations over specified period using:
         # source: http://www.fec.gov/disclosurep/PDownload.do (FEC)
@@ -114,4 +112,5 @@ for candidate in candidates:
 
         f.write(json.dumps(data))
         print("Finished aggregation for: " + candidate + " ...")
+
     f.close()
