@@ -30,24 +30,24 @@ html, body {
 
 
 
-.twitter, .twitter path, .twitter.title:hover {
+.twitter, .twitter path, .twitter.title:hover, .twitter.title.active {
   color: #1da1f2;
   stroke: #1da1f2;
 
 }
 
-.facebook, .facebook path, .facebook.title:hover {
+.facebook, .facebook path, .facebook.title:hover, .facebook.title.active {
   color: #3b5998;
   stroke: #3b5998;
 
 }
 
-.donations, .donations path .donations.title:hover {
+.donations, .donations path, .donations.title:hover, .donations.title.active {
   color: #009900;
   stroke: #009900;
 }
 
-.google, .google path, .google.title:hover {
+.google, .google path, .google.title:hover, .google.title.active {
   color: #ff5722;
   stroke: #ff5722;
 }
@@ -79,8 +79,14 @@ html, body {
   padding: 10px 20px;
 }
 
+.entry {
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  margin: 0 25px;
+}
+
 .entry .title {
-  padding: 25px;
   font-size: 1.1em;
 }
 
@@ -88,6 +94,9 @@ html, body {
   max-width: 0;
   opacity: 0;
   transition: 150ms linear all;
+  font-weight: 700;
+  margin-left:5px;
+
 }
 
 .weight.active {
@@ -95,14 +104,9 @@ html, body {
   opacity: 1;
 }
 
-
-.entry {
-
-  display: flex;
-  justify-content: space-between;
-  cursor: pointer;
+.times {
+  font-size: 0.6em;
 }
-
 
 /********* GRAPH *********/
 

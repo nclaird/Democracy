@@ -38,8 +38,8 @@ $( document )
 
       d3.json( 'data/data-final.json', function (err, data) {
 
-        var streams = prepData( data );
-
+        var streams = prepData( data ),
+            dateMaps = makeDateMaps(streams);
         svg.append( 'g' )
            .attr( 'class', 'aggregate' )
            .append( 'path' );
@@ -82,20 +82,36 @@ $( document )
           $( '.' + streamName + '.entry .title' )
               .click( function () {
                 if (isCurrentlySelected( streamName )) {
+                  //we're removing it from the equation
                   SELECTED_COMPONENTS = SELECTED_COMPONENTS.filter( function (entry) { return entry.stream !== streamName} );
                   $( '.weight.' + streamName )
                       .removeClass( 'active' )
 
                 } else {
+                  //we're adding it to the equation
                   SELECTED_COMPONENTS.push( {stream: streamName, weight: 1} );
-
                   $( '.weight.' + streamName )
+                      .addClass( 'active' )
+                  $( '.title.' + streamName )
                       .addClass( 'active' )
                 }
 
                 redrawAggregateStream();
 
               } );
+/*
+            $('.weight.' + streamName).change(function(change){
+              SELECTED_COMPONENTS = _.map(SELECTED_COMPONENTS, function(comp){
+                if (comp.stream == streamName){
+                  return {
+                    stream: comp.stream,
+                    weight: parseInt($( '.weight.' + streamName ).val())
+                  }
+                } else return comp;
+              })
+            })*/
+
+
 
 
         } );
@@ -110,49 +126,34 @@ $( document )
             return;
           }
 
-          var vals = {};
+          //temporary hack to only use shared dates
+          var sharedDates = _.intersection(_.map(SELECTED_COMPONENTS, function(comp){
+            return _.map(streams[comp.stream].values, function(entry){return entry.date})
+          }))[0];
 
-          SELECTED_COMPONENTS.forEach( function (entry, idx) {
-            streams[ entry.stream ].values.forEach( function (val) {
-              if (!vals.hasOwnProperty( val.date )) {
-                vals[ val.date ] = {
-                  date: val.date,
-                  nums: []
-                };
+
+          var result = _.map(sharedDates, function(date){
+            var values = _.reduce(SELECTED_COMPONENTS, function(result, comp){
+              for (var i = 0; i < comp.weight; i++){
+                result.push(dateMaps[comp.stream][date]);
               }
-              vals[ val.date ].nums.push( val.value );
-            } )
-          } );
+              return result;
+            }, []);
 
-          var result = _.transform( vals, function (result, entry, date) {
-            var avg = _.reduce( entry.nums, function (sum, val) { return sum + val} ) / entry.nums.length;
+            var mergedValue = _.reduce(values, function(sum, next){return sum + next}) / values.length;
+            return {
+              date: date,
+              value: mergedValue,
+              normValue:  mergedValue //they're already normalized
+            }
+          });
 
-            result.push( {
-              date : entry.date,
-              value: avg
-            } );
-
-            return result;
-          }, [] );
-
-
-          var min = d3.min( result, function (d) { return d.value } ),
-              max = d3.max( result, function (d) { return d.value } ),
-              normalize = d3.scale.linear()
-                            .domain( [ min, max ] )
-                            .range( [ 0, 1 ] );
-
-
-          result.forEach( function (entry) {
-            entry.normValue = normalize( entry.value );
-          } );
 
           svg.append( 'g' ).attr( 'class', 'aggregate' )
              .append( 'path' )
              .attr( "d", curve( result ) );
 
 
-          debugger;
 
 
         }
@@ -200,6 +201,16 @@ $( document )
         debugger;
 
         return returnVal;
+      }
+
+      function makeDateMaps(streams){
+        return _.reduce(streams, function(outerResult, stream){
+          outerResult[stream.title] = _.reduce(stream.values, function(innerResult, val){
+            innerResult[val.date] = val.normValue;
+            return innerResult;
+          }, {});
+          return outerResult;
+        }, {})
       }
 
 
