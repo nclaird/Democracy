@@ -22,7 +22,8 @@ export interface SelectedComponent {
 }
 
 export interface Headline {
-  date: Date,
-  headline: string
+  date: Date;
+  headline: string;
+  url: string;
 }
 

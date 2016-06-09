@@ -137,7 +137,7 @@ html, body {
   height: 0;
   overflow-y: visible;
   align-self: flex-start;
-
+  z-index: 1000;
   .date {
     font-weight: 300;
     padding: 5px 0;
@@ -148,17 +148,37 @@ html, body {
 
   }
 
-  .headline {
-    font-size: 1.1em;
+  .headline a {
     font-style: italic;
     font-weight: 200;
     max-width: 500px;
+    text-decoration: none;
+    color: $official;
+    &:hover{ color: #4078c0; }
+
   }
 
 }
 
 .dot-connector {
   stroke: $official;
+}
+
+.axis text {
+  font-size: 10px;
+  text-anchor: middle;
+}
+
+.axis path,
+.axis line {
+  z-index: -1;
+  fill: none;
+  stroke: #999;
+  shape-rendering: crispEdges;
+}
+
+path.domain {
+  opacity: 0;
 }
 
 /************ paths ****************/
@@ -226,3 +246,5 @@ html, body {
   }
 
 }
+
+svg { overflow: visible}
