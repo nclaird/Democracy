@@ -1,0 +1,127 @@
+/************ vars ****************/
+/************ page ****************/
+html, body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 100%;
+  font-family: 'Raleway';
+  font-size: 18px;
+  margin: 0;
+  background-color: #efefef;
+  overflow: hidden; }
+
+/************ top bar ****************/
+.top-bar {
+  height: 40px;
+  display: flex;
+  flex-shrink: 0;
+  justify-content: space-around;
+  align-items: center;
+  border-bottom: rgba(0, 0, 0, 0.2);
+  padding: 0 15px; }
+
+.viz-title {
+  font-size: 1.6em;
+  font-weight: 500; }
+
+.score {
+  font-weight: 700;
+  font-size: 1.5em; }
+
+/************ controls ****************/
+.controls {
+  align-self: stretch;
+  display: flex;
+  flex-grow: 1;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 10px 20px; }
+  .controls .entry {
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    margin: 0 25px; }
+    .controls .entry .title {
+      font-size: 1.1em;
+      color: #111; }
+      .controls .entry .title.twitter.active, .controls .entry .title.twitter:hover {
+        color: #1da1f2; }
+      .controls .entry .title.facebook.active, .controls .entry .title.facebook:hover {
+        color: #3b5998; }
+      .controls .entry .title.google.active, .controls .entry .title.google:hover {
+        color: #ff5722; }
+      .controls .entry .title.donations.active, .controls .entry .title.donations:hover {
+        color: #009900; }
+    .controls .entry .weight {
+      max-width: 0;
+      opacity: 0;
+      transition: 150ms linear all;
+      font-weight: 700;
+      margin-left: 5px; }
+      .controls .entry .weight.active {
+        max-width: 25px;
+        opacity: 1; }
+
+/************ story ****************/
+.story {
+  margin: 0 25px;
+  font-size: 1.3em;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  height: 0;
+  overflow-y: visible;
+  align-self: flex-start; }
+  .story .date {
+    font-weight: 300;
+    padding: 5px 0;
+    margin: 5px 0;
+    border-top: 1px solid #888;
+    text-align: center;
+    width: 385px; }
+  .story .headline {
+    font-size: 1.1em;
+    font-style: italic;
+    font-weight: 200;
+    text-align: center;
+    max-width: 500px; }
+
+/************ paths ****************/
+.stream path {
+  opacity: 0;
+  stroke-width: 2;
+  fill: none;
+  transition: 150ms ease-out opacity; }
+
+.stream.visible path {
+  opacity: 1; }
+
+.stream.twitter path {
+  stroke: #1da1f2; }
+
+.stream.facebook path {
+  stroke: #3b5998; }
+
+.stream.google path {
+  stroke: #ff5722; }
+
+.stream.donations path {
+  stroke: #009900; }
+
+.stream.official path {
+  stroke: #222;
+  opacity: 0.5;
+  stroke-width: 10;
+  stroke-linecap: round;
+  z-index: -1; }
+  .target.hovered .stream.official path {
+    opacity: 0.4; }
+
+.stream.aggregate path {
+  stroke: #222;
+  opacity: 1; }
+
+/*# sourceMappingURL=styles.css.map*/
