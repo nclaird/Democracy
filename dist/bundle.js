@@ -115,7 +115,15 @@
 	 *  officialStream is what we're comparing it to
 	 */
 	function calcLSR(officialStream, aggStream) {
-	    debugger;
+	    var Variance = 0;
+        var singleVar = 0;
+        for(var inc = 0;inc<officialStream.length;inc++){
+            singleVar = officialStream[inc].normValue + aggStream[inc].normValue;
+            singleVar = singleVar * singleVar;
+            Variance = Variance + singleVar;
+        }
+    return(Variance);
+        debugger;
 	}
 	function genAddHandlerFxn(data, update) {
 	    return function (name) {
