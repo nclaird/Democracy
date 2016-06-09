@@ -1,0 +1,473 @@
+{
+  "headlines": [
+    {
+      "date": "2016-01-04",
+      "headline": "Donald Trump Finally Buys TV Ads, and Lots of Them",
+      "url": "http://www.nytimes.com/politics/first-draft/2016/01/04/donald-trump-finally-takes-out-his-checkbook-for-tv-ad-buys/"
+    },
+    {
+      "date": "2016-01-11",
+      "headline": "Trump Submits to Presidential 'Job Interview' on 'Tonight'",
+      "url": "http://www.nytimes.com/aponline/2016/01/11/us/ap-us-tv-trump-tonight-show.html"
+    },
+    {
+      "date": "2016-01-18",
+      "headline": "Unmuzzling Himself, Ted Cruz Tells Voters to &#8216;Doubt the Credibility&#8217; of Donald Trump",
+      "url": "http://www.nytimes.com/politics/first-draft/2016/01/18/unmuzzling-himself-ted-cruz-tells-voters-to-doubt-the-credibility-of-donald-trump/"
+    },
+    {
+      "date": "2016-01-25",
+      "headline": "Donald Trump to New Hampshire: Give Me a Mandate",
+      "url": "http://www.nytimes.com/politics/first-draft/2016/01/25/trump-to-new-hampshire-give-me-a-mandate/"
+    },
+    {
+      "date": "2016-02-01",
+      "headline": "Donald Trump Concedes Defeat in Iowa",
+      "url": "http://www.nytimes.com/video/us/politics/100000004182359/donald-trump-concedes-defeat-in-iowa.html"
+    },
+    {
+      "date": "2016-02-08",
+      "headline": "Donald Trump Tries a Town Hall Event, and It&#8217;s a Hit",
+      "url": "http://www.nytimes.com/politics/first-draft/2016/02/08/donald-trump-tries-a-town-hall-event-and-its-a-hit/"
+    },
+    {
+      "date": "2016-02-15",
+      "headline": "No Mention of &#8216;Birther&#8217; Debate as Donald Trump Woos Blacks in South Carolina",
+      "url": "http://www.nytimes.com/politics/first-draft/2016/02/15/no-mention-of-birther-debate-as-donald-trump-woos-blacks-in-south-carolina/"
+    },
+    {
+      "date": "2016-02-22",
+      "headline": "Donald Trump Says He&#8217;ll Release Tax Returns &#8216;at Some Point&#8217;",
+      "url": "http://www.nytimes.com/politics/first-draft/2016/02/22/donald-trump-says-hell-release-tax-returns-at-some-point/"
+    },
+    {
+      "date": "2016-02-29",
+      "headline": "Nascar Executive Endorses Donald Trump",
+      "url": "http://www.nytimes.com/video/us/100000004242517/nascar-executive-endorses-donald-trump.html"
+    },
+    {
+      "date": "2016-03-07",
+      "headline": "Egyptian Man Behind Donald Trump Facebook Threat to Leave U.S.",
+      "url": "http://www.nytimes.com/reuters/2016/03/07/world/middleeast/07reuters-california-threat-trump.html"
+    },
+    {
+      "date": "2016-03-14",
+      "headline": "Donald Trump Jabs Foe (John Kasich) and Friend (Chris Christie) Alike",
+      "url": "http://www.nytimes.com/politics/first-draft/2016/03/14/donald-trump-jabs-foe-john-kasich-and-friend-chris-christie-alike/"
+    },
+    {
+      "date": "2016-03-21",
+      "headline": "Donald Trump Offers New Insight Into Foreign Policy Posture",
+      "url": "http://www.nytimes.com/aponline/2016/03/21/us/politics/ap-us-gop-2016-trump-foreign-policy.html"
+    },
+    {
+      "date": "2016-03-28",
+      "headline": "Trump Campaign Planning to Open Washington, DC Office",
+      "url": "http://www.nytimes.com/aponline/2016/03/28/us/politics/ap-us-gop-2016-trump-washington.html"
+    },
+    {
+      "date": "2016-04-04",
+      "headline": "Melania Trump Speaks at Campaign Event",
+      "url": "http://www.nytimes.com/video/us/100000004309405/melania-trump-speaks-at-campaign-event.html"
+    },
+    {
+      "date": "2016-04-11",
+      "headline": "Donald Trump Campaigns in Albany",
+      "url": "http://www.nytimes.com/video/us/elections/100000004321788/donald-trump-campaigns-in-albany.html"
+    },
+    {
+      "date": "2016-04-18",
+      "headline": "Donald Trump Invokes Memories of &#8230; 7-Eleven?",
+      "url": "http://www.nytimes.com/politics/first-draft/2016/04/18/donald-trump-invokes-memories-of-7-eleven/"
+    },
+    {
+      "date": "2016-04-25",
+      "headline": "Donald Trump Agrees to an Interview With Megyn Kelly, Fox News Says",
+      "url": "http://www.nytimes.com/politics/first-draft/2016/04/25/donald-trump-agrees-to-an-interview-with-megyn-kelly-fox-news-says/"
+    },
+    {
+      "date": "2016-05-02",
+      "headline": "Trump Chastises Opponents\u2019 \u2018Stupid Deal\u2019",
+      "url": "http://www.nytimes.com/video/us/100000004380325/trump-chastises-opponents-stupid-deal.html"
+    },
+    {
+      "date": "2016-05-09",
+      "headline": "London's Mayor an Exception to Proposed Ban on Muslims: Trump",
+      "url": "http://www.nytimes.com/reuters/2016/05/09/world/europe/09reuters-usa-election-trump-khan.html"
+    },
+    {
+      "date": "2016-05-16",
+      "headline": "Boston Men Jailed for Trump-Inspired Hate Crime Attack",
+      "url": "http://www.nytimes.com/reuters/2016/05/16/world/americas/16reuters-usa-mexico-beating.html"
+    },
+    {
+      "date": "2016-05-23",
+      "headline": "Trump Adds Virgin Islands Delegates; Nomination Within Reach",
+      "url": "http://www.nytimes.com/aponline/2016/05/23/us/politics/ap-us-gop-2016-delegate-update.html"
+    },
+    {
+      "date": "2016-05-30",
+      "headline": "On Cutting-Edge Voter Data, Trump Critically Behind Clinton",
+      "url": "http://www.nytimes.com/aponline/2016/05/30/us/politics/ap-us-gop-2016-trump-data.html"
+    }
+  ],
+  "streams": [
+    {
+      "name": "bugIsIgnoringFirstElement",
+      "values": []
+    },
+    {
+      "name": "twitter",
+      "values": [
+        {
+          "value": 68035,
+          "date": "2016-02-20"
+        },
+        {
+          "value": 148470,
+          "date": "2016-03-26"
+        },
+        {
+          "value": 113873,
+          "date": "2016-04-16"
+        },
+        {
+          "value": 119991,
+          "date": "2016-04-09"
+        },
+        {
+          "value": 127717,
+          "date": "2016-03-19"
+        },
+        {
+          "value": 121279,
+          "date": "2016-04-23"
+        },
+        {
+          "value": 104443,
+          "date": "2016-04-30"
+        },
+        {
+          "value": 63006,
+          "date": "2016-01-30"
+        },
+        {
+          "value": 47721,
+          "date": "2016-01-16"
+        },
+        {
+          "value": 59676,
+          "date": "2016-01-09"
+        },
+        {
+          "value": 142042,
+          "date": "2016-04-02"
+        },
+        {
+          "value": 114386,
+          "date": "2016-03-12"
+        },
+        {
+          "value": 103692,
+          "date": "2016-02-13"
+        },
+        {
+          "value": 68427,
+          "date": "2016-02-06"
+        },
+        {
+          "value": 67486,
+          "date": "2016-02-27"
+        },
+        {
+          "value": 39707,
+          "date": "2016-01-23"
+        },
+        {
+          "value": 112620,
+          "date": "2016-03-05"
+        }
+      ]
+    },
+    {
+      "name": "facebook",
+      "values": [
+        {
+          "value": 1314885,
+          "date": "2016-02-20"
+        },
+        {
+          "value": 1852417,
+          "date": "2016-03-26"
+        },
+        {
+          "value": 1120087,
+          "date": "2016-04-16"
+        },
+        {
+          "value": 1115516,
+          "date": "2016-04-09"
+        },
+        {
+          "value": 2123647,
+          "date": "2016-03-19"
+        },
+        {
+          "value": 1228938,
+          "date": "2016-04-30"
+        },
+        {
+          "value": 1263832,
+          "date": "2016-01-16"
+        },
+        {
+          "value": 1243509,
+          "date": "2016-01-09"
+        },
+        {
+          "value": 1595247,
+          "date": "2016-04-02"
+        },
+        {
+          "value": 1902587,
+          "date": "2016-03-12"
+        },
+        {
+          "value": 1279424,
+          "date": "2016-02-13"
+        },
+        {
+          "value": 1093730,
+          "date": "2016-02-06"
+        },
+        {
+          "value": 1650921,
+          "date": "2016-02-27"
+        },
+        {
+          "value": 1176194,
+          "date": "2016-01-23"
+        },
+        {
+          "value": 2029043,
+          "date": "2016-03-05"
+        }
+      ]
+    },
+    {
+      "name": "google",
+      "values": [
+        {
+          "value": 37,
+          "date": "2016-02-20"
+        },
+        {
+          "value": 54,
+          "date": "2016-03-26"
+        },
+        {
+          "value": 31,
+          "date": "2016-04-16"
+        },
+        {
+          "value": 38,
+          "date": "2016-04-09"
+        },
+        {
+          "value": 78,
+          "date": "2016-03-19"
+        },
+        {
+          "value": 34,
+          "date": "2016-04-23"
+        },
+        {
+          "value": 37,
+          "date": "2016-04-30"
+        },
+        {
+          "value": 40,
+          "date": "2016-01-30"
+        },
+        {
+          "value": 26,
+          "date": "2016-01-16"
+        },
+        {
+          "value": 23,
+          "date": "2016-01-09"
+        },
+        {
+          "value": 45,
+          "date": "2016-04-02"
+        },
+        {
+          "value": 71,
+          "date": "2016-03-12"
+        },
+        {
+          "value": 37,
+          "date": "2016-02-13"
+        },
+        {
+          "value": 41,
+          "date": "2016-02-06"
+        },
+        {
+          "value": 63,
+          "date": "2016-02-27"
+        },
+        {
+          "value": 29,
+          "date": "2016-01-23"
+        },
+        {
+          "value": 100,
+          "date": "2016-03-05"
+        }
+      ]
+    },
+    {
+      "name": "donations",
+      "values": [
+        {
+          "value": 161988.01,
+          "date": "2016-02-20"
+        },
+        {
+          "value": 79773.76,
+          "date": "2016-03-26"
+        },
+        {
+          "value": 103015.69,
+          "date": "2016-04-16"
+        },
+        {
+          "value": 67101.49,
+          "date": "2016-04-09"
+        },
+        {
+          "value": 126378.04,
+          "date": "2016-03-19"
+        },
+        {
+          "value": 143934.81,
+          "date": "2016-04-23"
+        },
+        {
+          "value": 123934.81,
+          "date": "2016-04-30"
+        },
+        {
+          "value": 77359.55,
+          "date": "2016-01-30"
+        },
+        {
+          "value": 66462.63,
+          "date": "2016-01-16"
+        },
+        {
+          "value": 31502.59,
+          "date": "2016-01-09"
+        },
+        {
+          "value": 73616.91,
+          "date": "2016-04-02"
+        },
+        {
+          "value": 162088.3,
+          "date": "2016-03-12"
+        },
+        {
+          "value": 67409.03,
+          "date": "2016-02-13"
+        },
+        {
+          "value": 98054.39,
+          "date": "2016-02-06"
+        },
+        {
+          "value": 185699.8,
+          "date": "2016-02-27"
+        },
+        {
+          "value": 45683.75,
+          "date": "2016-01-23"
+        },
+        {
+          "value": 132083.07,
+          "date": "2016-03-05"
+        }
+      ]
+    },
+    {
+      "name": "official",
+      "values": [
+        {
+          "value": 33.5,
+          "date": "2016-02-20"
+        },
+        {
+          "value": 40.75,
+          "date": "2016-03-26"
+        },
+        {
+          "value": 44.0,
+          "date": "2016-04-16"
+        },
+        {
+          "value": 41.75,
+          "date": "2016-04-09"
+        },
+        {
+          "value": 43.38,
+          "date": "2016-03-19"
+        },
+        {
+          "value": 46.5,
+          "date": "2016-04-23"
+        },
+        {
+          "value": 47.75,
+          "date": "2016-04-30"
+        },
+        {
+          "value": 28.0,
+          "date": "2016-01-30"
+        },
+        {
+          "value": 35.0,
+          "date": "2016-01-16"
+        },
+        {
+          "value": 34.5,
+          "date": "2016-01-09"
+        },
+        {
+          "value": 37.5,
+          "date": "2016-04-02"
+        },
+        {
+          "value": 43.0,
+          "date": "2016-03-12"
+        },
+        {
+          "value": 34.88,
+          "date": "2016-02-13"
+        },
+        {
+          "value": 49.0,
+          "date": "2016-02-27"
+        },
+        {
+          "value": 35.0,
+          "date": "2016-01-23"
+        },
+        {
+          "value": 32.0,
+          "date": "2016-03-05"
+        }
+      ]
+    }
+  ]
+}
