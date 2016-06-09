@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "d3": "^3.5.17",
+    "font-awesome": "^4.6.3",
     "jquery": "^2.2.4",
     "lodash": "^4.13.1"
   },

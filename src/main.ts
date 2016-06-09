@@ -16,7 +16,7 @@ const target            = d3.select( '.target' ),
       headlineDiv       = $( '.headline' ),
 
 
-      margin            = { top: 55, right: 10, bottom: 50, left: 10 },
+      margin            = { top: 55, right: 0, bottom: 50, left: 0 },
       padding           = 5,
 
       windowWid         = $( document ).width(),
@@ -61,7 +61,8 @@ d3.json( './data-final.json', (error, rawData)=> {
         minDate           = d3.min( streams, stream => d3.min( stream.values, entry => entry.date ) ),
         maxDate           = d3.max( streams, stream => d3.max( stream.values, entry => entry.date ) );
 
-  toX.domain( [ minDate, maxDate ] )
+  toX.domain( [ minDate, maxDate ] );
+  let pristine = true;
 
 
   const gs: Selection<Stream> = svg.selectAll( '.stream' ).data( streams )
@@ -79,24 +80,37 @@ d3.json( './data-final.json', (error, rawData)=> {
         //               .attr('cx', 0)
         //               .attr('cy', 50)             ,
 
-        dot                   = svg.append( 'circle' )
-                                   .attr( 'class', d => `dot` )
+        offDot                   = svg.append( 'circle' )
+                                   .attr( 'class', `dot official` )
                                    .attr( 'r', '3' )
                                    .attr( 'cx', 0 )
                                    .attr( 'cy', 50 ),
 
 
-        officialPath          = svg.select( '.stream.official path ' );
+        // aggDot = svg.append( 'circle' )
+        //                                   .attr( 'class', `dot aggregate` )
+        //                                   .attr( 'r', '3' )
+        //                                   .attr( 'cx', 0 )
+        //                                   .attr( 'cy', 50 ),
+
+        // cxn =    svg.append('line').attr('class', 'dot-connector'),                                  
+
+        officialPath          = svg.select( '.stream.official path ' ),
+        aggregatePath = svg.select( '.stream.aggregate path ' );
 
 
   svg.on( "mousemove", function () {
     let m = d3.mouse( this ),
-        y = closestPoint( officialPath.node(), m );
+        offPt = closestPoint( officialPath.node(), m ),
+        aggPt = closestPoint(aggregatePath.node(), m);
 
-    dot.attr( 'cx', y[ 0 ] )
-       .attr( 'cy', y[ 1 ] );
+    offDot.attr( 'cx', offPt[ 0 ] ).attr( 'cy', offPt[ 1 ] );
 
-    setText( y[ 0 ] );
+    // aggDot.attr( 'cx', aggPt[ 0 ] ).attr( 'cy', aggPt[ 1 ] );
+
+    // cxn.attr('x1', offPt[0]).attr('x2', aggPt[0]).attr('y1', offPt[1]).attr('y2', aggPt[1])
+
+    setText( m[ 0 ] );
 
   } )
 
@@ -151,19 +165,64 @@ function genAddHandlerFxn(data, redraw: ()=>void): (name: string)=> void {
     $( `.entry .title.${name}` ).click( ()=> {
       if (!hasName( selectedComponents, name )) {
         selectedComponents.push( { streamName: name, weight: 1 } );
-        $( `.weight.${name}` ).removeClass( 'active' )
-        $( `.title.${name}` ).removeClass( 'active' )
+                $( `.entry.${name}` ).addClass( 'active' )
+        $( `.title.${name}` ).addClass( 'active' )
 
       } else {
         _.remove( selectedComponents, (comp)=> comp.streamName === name );
-        $( `.weight.${name}` ).removeClass( 'active' )
+        $( `.entry.${name}` ).removeClass( 'active' )
         $( `.title.${name}` ).removeClass( 'active' )
+        $( `.${name}.weight` ).text( '' );
+
+
+      }
+      redraw();
+    } );
+    
+    $(`.${name}.up`).click(()=> {
+      adjustWeight(name, 1);
+      if (getStreamWeight(name) > 1){
+        $( `.${name}.weight` ).html( `<span class="times">x</span>${getStreamWeight( name )}` );
+      }
+      redraw();
+    });
+
+    $( `.${name}.down` ).click( ()=> {
+      let curr = getStreamWeight(name);
+      if (curr <= 1){
+        //if setting it to 0, deactivate 
+        adjustWeight(name, -1);
+                $( `.${name}.weight` ).text('');
+                        _.remove( selectedComponents, (comp)=> comp.streamName === name );
+        $( `.entry.${name}` ).removeClass( 'active' );
+        $( `.title.${name}` ).removeClass( 'active' );
+      } else { 
+      adjustWeight( name, -1 );
+              $( `.${name}.weight` ).html(`<span class="times">x</span>${getStreamWeight(name)}`);
+
       }
       redraw();
     } )
 
+
   }
 
+}
+
+function adjustWeight(name: string, amt: number): number{
+  for (let i = 0; i < selectedComponents.length; i++){
+    if (selectedComponents[i].streamName === name){
+      selectedComponents[i].weight += amt;
+    }
+  }
+}
+
+function getStreamWeight(name: string): number{
+  for (let i = 0; i < selectedComponents.length; i++) {
+    if (selectedComponents[ i ].streamName === name) {
+      return selectedComponents[ i ].weight;
+    }
+  }
 }
 
 

@@ -25,3 +25,4 @@ export interface Headline {
   date: Date,
   headline: string
 }
+

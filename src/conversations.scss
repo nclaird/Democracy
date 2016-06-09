@@ -58,12 +58,16 @@ html, body {
   .entry {
     display: flex;
     justify-content: center;
+    align-items: center;
     cursor: pointer;
     margin: 0 25px;
 
     .title {
       font-size: 1.1em;
       color: $dark-text;
+      margin: 0 3px;
+      display: flex;
+      align-items: center;
 
       &.twitter.active, &.twitter:hover {
         color: $twitter;
@@ -83,16 +87,38 @@ html, body {
 
     }
 
-    .weight {
-      max-width: 0;
+    .fa {
+      font-size: 0.9em;
       opacity: 0;
-      transition: 150ms linear all;
-      font-weight: 700;
-      margin-left: 5px;
+      transition: 400ms linear opacity;
 
-      &.active {
-        max-width: 25px;
-        opacity: 1;
+      &.fa-chevron-circle-up {
+        color: green;
+      }
+
+      &.fa-chevron-circle-down {
+        color: red;
+      }
+
+    }
+
+    &.active .fa {
+      opacity: 1;
+      transition: 2000ms linear opacity;
+
+    }
+
+    .weight {
+      transition: 150ms linear all;
+      margin-left: 5px;
+      overflow-y: visible;
+      color: black;
+      font-weight: 600;
+      font-size: 0.9em;
+      position: relative;
+      top: -2px;
+      .times {
+        font-size: 0.75em;
       }
 
     }
@@ -126,10 +152,13 @@ html, body {
     font-size: 1.1em;
     font-style: italic;
     font-weight: 200;
-    text-align: center;
     max-width: 500px;
   }
 
+}
+
+.dot-connector {
+  stroke: $official;
 }
 
 /************ paths ****************/
@@ -181,7 +210,13 @@ html, body {
 
   }
 
-  .target {
+  .dot {
+
+    opacity: 0;
+
+  }
+
+  .target.pristine svg .dot {
 
   }
 
