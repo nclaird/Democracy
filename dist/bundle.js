@@ -139,6 +139,7 @@
 	                $(".title." + name).removeClass('active');
 	                $("." + name + ".weight").text('');
 	            }
+	            $(".stream").removeClass('visible');
 	            redraw();
 	        });
 	        $("." + name + ".up").click(function () {
@@ -184,8 +185,10 @@
 	    var recalc = genRecalcFxn(data);
 	    return function () {
 	        aggStream
-	            .transition().duration(500)
-	            .attr("d", curve(recalc()));
+	            .transition()
+	            .duration(500).delay(200)
+	            .attr("d", curve(recalc()))
+	            .style('opacity', 1);
 	    };
 	}
 	function genRecalcFxn(data) {

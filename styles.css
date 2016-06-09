@@ -106,7 +106,7 @@ html, body {
     max-width: 500px; }
 
 .dot-connector {
-  stroke: #222; }
+  stroke: #888; }
 
 /************ paths ****************/
 .stream path {
@@ -131,7 +131,7 @@ html, body {
   stroke: #009900; }
 
 .stream.official path {
-  stroke: #222;
+  stroke: #888;
   opacity: 0.5;
   stroke-width: 10;
   stroke-linecap: round;
@@ -143,7 +143,7 @@ html, body {
   opacity: 0; }
 
 .stream.aggregate path {
-  stroke: #222;
+  stroke: #111;
   opacity: 1; }
 
 /*# sourceMappingURL=styles.css.map*/
