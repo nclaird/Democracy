@@ -3,8 +3,8 @@ $twitter: #1da1f2;
 $facebook: #3b5998;
 $donations: #009900;
 $google: #ff5722;
-$official: #222;
-
+$official: #888;
+$aggregate: #111;
 $dark-text: #111;
 
 /************ page ****************/
@@ -221,7 +221,7 @@ html, body {
   }
 
   &.aggregate path {
-    stroke: $official;
+    stroke: $aggregate;
     opacity: 1;
   }
 

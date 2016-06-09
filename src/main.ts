@@ -64,7 +64,6 @@ d3.json( './data-final.json', (error, rawData)=> {
   toX.domain( [ minDate, maxDate ] );
   let pristine = true;
 
-
   const gs: Selection<Stream> = svg.selectAll( '.stream' ).data( streams )
                                    .enter()
                                    .append( 'g' )
@@ -165,7 +164,7 @@ function genAddHandlerFxn(data, redraw: ()=>void): (name: string)=> void {
     $( `.entry .title.${name}` ).click( ()=> {
       if (!hasName( selectedComponents, name )) {
         selectedComponents.push( { streamName: name, weight: 1 } );
-                $( `.entry.${name}` ).addClass( 'active' )
+         $( `.entry.${name}` ).addClass( 'active' )
         $( `.title.${name}` ).addClass( 'active' )
 
       } else {
@@ -176,6 +175,7 @@ function genAddHandlerFxn(data, redraw: ()=>void): (name: string)=> void {
 
 
       }
+      $( `.stream` ).removeClass( 'visible' );
       redraw();
     } );
     
@@ -230,9 +230,12 @@ function genRedrawFxn(data): ()=> void {
   const recalc = genRecalcFxn( data );
 
   return ()=> {
+
     aggStream
-        .transition().duration( 500 )
-        .attr( "d", curve( recalc() ) );
+        .transition()
+        .duration( 500 ).delay(200)
+        .attr( "d", curve( recalc() ) )
+        .style('opacity', 1);
   }
 }
 
