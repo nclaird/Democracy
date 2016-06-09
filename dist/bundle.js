@@ -56,7 +56,7 @@
 	    .domain([0, 1]) // we already know the domain of this bc we're normalizing
 	    .range([svgHt - padding, 0]), svg = target.append('svg')
 	    .attr('height', svgHt)
-	    .attr('width', svgWid), inputDateFormat = d3.time.format('%Y-%m-%d'), displayDateFormat = d3.time.format('%a, %B %e '), curve = d3.svg.line()
+	    .attr('width', svgWid), curve = d3.svg.line()
 	    .interpolate("basis")
 	    .x(function (d) { return toX(d.date); })
 	    .y(function (d) { return toY(d.normValue); }), xAxis = d3.svg.axis()
@@ -64,12 +64,13 @@
 	    .orient("bottom")
 	    .ticks(d3.time.weeks, 2)
 	    .tickSize(-(svgHt - 90), 1)
-	    .tickFormat(d3.time.format("%B %e")), selectedComponents = [], aggStream = svg.append('g')
+	    .tickFormat(d3.time.format("%B %e")), inputDateFormat = d3.time.format('%Y-%m-%d'), displayDateFormat = d3.time.format('%a, %B %e '), selectedComponents = [], aggStream = svg.append('g')
 	    .attr('class', 'aggregate stream')
 	    .append('path');
 	d3.json('./data-final.json', function (error, rawData) {
-	    var streamData = prepStreamData(rawData.streams), streams = _.values(streamData), headlines = prepHeadlineData(rawData.headlines), updateViz = getUpdateFxn(streamData), addHandlers = genAddHandlerFxn(streamData, updateViz), minDate = d3.min(streams, function (stream) { return d3.min(stream.values, function (entry) { return entry.date; }); }), maxDate = d3.max(streams, function (stream) { return d3.max(stream.values, function (entry) { return entry.date; }); });
+	    var streamData = prepStreamData(rawData.streams), streams = _.values(streamData), headlines = prepHeadlineData(rawData.headlines), updateViz = generateUpdateFunction(streamData), addHandlers = generateAddHandlersFunction(streamData, updateViz), setText = generateSetHeadlineFunction(headlines), minDate = d3.min(streams, function (stream) { return d3.min(stream.values, function (entry) { return entry.date; }); }), maxDate = d3.max(streams, function (stream) { return d3.max(stream.values, function (entry) { return entry.date; }); });
 	    toX.domain([minDate, maxDate]);
+	    //draw x axis
 	    svg.append("g")
 	        .attr("class", "x axis")
 	        .attr("transform", "translate(0," + svgHt + ")")
@@ -78,29 +79,18 @@
 	        .style("text-anchor", "start")
 	        .attr("x", 6)
 	        .attr("y", 6);
-	    var gs = svg.selectAll('.stream').data(streams)
+	    //draw streams
+	    svg.selectAll('.stream').data(streams)
 	        .enter()
 	        .append('g')
-	        .attr('class', function (d) { return ("stream " + d.name); }), paths = gs.append('path')
+	        .attr('class', function (d) { return ("stream " + d.name); })
+	        .append('path')
 	        .attr("d", function (d) { return curve(d.values); })
-	        .each(function (d) { return addHandlers(d.name); }), officialPath = svg.select('.stream.official path ');
-	    svg.on("mousemove", function () {
-	        var m = d3.mouse(this);
-	        setText(m[0]);
-	    });
-	    animatePathOn(officialPath);
-	    function setText(x) {
-	        var date = toX.invert(x), headline = findClosestHeadlineDate(date);
-	        dateDiv.html(displayDateFormat(headline.date));
-	        headlineDiv.html("<a href=\"" + headline.url + "\" target=\"_blank\">" + headline.headline + "</a> ");
-	        // headlineDiv.html( `${headline.headline}` );
-	        function findClosestHeadlineDate(date) {
-	            var i = 0;
-	            for (; i < headlines.length && headlines[i].date < date; i++) { }
-	            console.log();
-	            return headlines[i];
-	        }
-	    }
+	        .each(function (d) { return addHandlers(d.name); });
+	    //add mousemove listener for setting headline text
+	    svg.on("mousemove", function () { setText(d3.mouse(this)[0]); });
+	    //animate drawing the official line
+	    animatePathOn(svg.select('.stream.official path '));
 	});
 	/**
 	 * aggStream is the output of the user's algorithm
@@ -116,7 +106,7 @@
 	    }
 	    return (100 - Variance).toFixed(2);
 	}
-	function genAddHandlerFxn(data, update) {
+	function generateAddHandlersFunction(data, update) {
 	    return function (name) {
 	        addStreamHoverHandlers(name);
 	        addStreamClickHandlers(name);
@@ -172,33 +162,7 @@
 	        });
 	    }
 	}
-	function adjustWeight(name, amt) {
-	    for (var i = 0; i < selectedComponents.length; i++) {
-	        if (selectedComponents[i].streamName === name) {
-	            selectedComponents[i].weight += amt;
-	        }
-	    }
-	}
-	function getStreamWeight(name) {
-	    for (var i = 0; i < selectedComponents.length; i++) {
-	        if (selectedComponents[i].streamName === name) {
-	            return selectedComponents[i].weight;
-	        }
-	    }
-	}
-	function getUpdateFxn(data) {
-	    var recalc = genRecalcFxn(data);
-	    return function () {
-	        var updatedAggStream = recalc();
-	        $('.score').text(calcLSR(data.official.values, updatedAggStream));
-	        aggStream
-	            .transition()
-	            .duration(500).delay(200)
-	            .attr("d", curve(updatedAggStream))
-	            .style('opacity', 1);
-	    };
-	}
-	function genRecalcFxn(data) {
+	function generateRecalculateFunction(data) {
 	    return function recalculateAggregateStream() {
 	        //temporary hack to only use shared dates
 	        var sharedDates = _.intersection(selectedComponents.map(function (comp) {
@@ -219,6 +183,45 @@
 	                normValue: mergedValue
 	            };
 	        });
+	    };
+	}
+	function generateSetHeadlineFunction(headlines) {
+	    return function setText(x) {
+	        var date = toX.invert(x), headline = findClosestHeadlineDate(date);
+	        dateDiv.html(displayDateFormat(headline.date));
+	        headlineDiv.html("<a href=\"" + headline.url + "\" target=\"_blank\">" + headline.headline + "</a> ");
+	        function findClosestHeadlineDate(date) {
+	            var i = 0;
+	            for (; i < headlines.length && headlines[i].date < date; i++) { }
+	            console.log();
+	            return headlines[i];
+	        }
+	    };
+	}
+	function adjustWeight(name, amt) {
+	    for (var i = 0; i < selectedComponents.length; i++) {
+	        if (selectedComponents[i].streamName === name) {
+	            selectedComponents[i].weight += amt;
+	        }
+	    }
+	}
+	function getStreamWeight(name) {
+	    for (var i = 0; i < selectedComponents.length; i++) {
+	        if (selectedComponents[i].streamName === name) {
+	            return selectedComponents[i].weight;
+	        }
+	    }
+	}
+	function generateUpdateFunction(data) {
+	    var recalc = generateRecalculateFunction(data);
+	    return function () {
+	        var updatedAggStream = recalc();
+	        $('.score').text(calcLSR(data.official.values, updatedAggStream));
+	        aggStream
+	            .transition()
+	            .duration(500).delay(200)
+	            .attr("d", curve(updatedAggStream))
+	            .style('opacity', 1);
 	    };
 	}
 	function prepStreamData(input) {
