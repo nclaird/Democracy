@@ -9,7 +9,7 @@ html, body {
   font-size: 18px;
   margin: 0;
   background-color: #efefef;
-  overflow: hidden; }
+  overflow-x: hidden; }
 
 /************ top bar ****************/
 .top-bar {
@@ -102,7 +102,7 @@ html, body {
     width: 385px; }
   .story .headline a {
     font-style: italic;
-    font-weight: 200;
+    font-weight: 300;
     max-width: 500px;
     text-decoration: none;
     color: #888; }
@@ -166,5 +166,33 @@ path.domain {
 
 svg {
   overflow: visible; }
+
+.storyline {
+  margin-top: 30px;
+  font-size: 1.2em;
+  text-align: center; }
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted white; }
+
+.tooltip .tooltiptext {
+  opacity: 0;
+  font-size: 12px !important;
+  background-color: rgba(255, 255, 255, 0.85);
+  color: black;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  min-width: 400px;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1; }
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  transition: 200ms linear all 1000ms;
+  opacity: 1; }
 
 /*# sourceMappingURL=styles.css.map*/
