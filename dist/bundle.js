@@ -53,7 +53,7 @@
 	__webpack_require__(10);
 	var models_1 = __webpack_require__(11);
 	var functions_1 = __webpack_require__(12);
-	var target = d3.select('.target'), dateDiv = $('.date'), headlineDiv = $('.headline'), margin = { top: 55, right: 10, bottom: 50, left: 10 }, padding = 5, windowWid = $(document).width(), windowHt = $(document).height(), svgHt = windowHt - margin.top - margin.bottom, svgWid = windowWid - margin.left - margin.right, toX = d3.time.scale().range([0, svgWid - padding]), toY = d3.scale.linear()
+	var target = d3.select('.target'), dateDiv = $('.date'), headlineDiv = $('.headline'), margin = { top: 55, right: 0, bottom: 50, left: 0 }, padding = 5, windowWid = $(document).width(), windowHt = $(document).height(), svgHt = windowHt - margin.top - margin.bottom, svgWid = windowWid - margin.left - margin.right, toX = d3.time.scale().range([0, svgWid - padding]), toY = d3.scale.linear()
 	    .domain([0, 1]) // we already know the domain of this bc we're normalizing
 	    .range([svgHt - padding, 0]), svg = target.append('svg')
 	    .attr('height', svgHt)
@@ -66,6 +66,7 @@
 	d3.json('./data-final.json', function (error, rawData) {
 	    var streamData = prepStreamData(rawData.streams), streams = _.values(streamData), headlines = prepHeadlineData(rawData.headlines), redraw = genRedrawFxn(streamData), addHandlers = genAddHandlerFxn(streamData, redraw), minDate = d3.min(streams, function (stream) { return d3.min(stream.values, function (entry) { return entry.date; }); }), maxDate = d3.max(streams, function (stream) { return d3.max(stream.values, function (entry) { return entry.date; }); });
 	    toX.domain([minDate, maxDate]);
+	    var pristine = true;
 	    var gs = svg.selectAll('.stream').data(streams)
 	        .enter()
 	        .append('g')
@@ -77,16 +78,24 @@
 	    //               .attr( 'r', '3' )
 	    //               .attr('cx', 0)
 	    //               .attr('cy', 50)             ,
-	    dot = svg.append('circle')
-	        .attr('class', function (d) { return "dot"; })
+	    offDot = svg.append('circle')
+	        .attr('class', "dot official")
 	        .attr('r', '3')
 	        .attr('cx', 0)
-	        .attr('cy', 50), officialPath = svg.select('.stream.official path ');
+	        .attr('cy', 50), 
+	    // aggDot = svg.append( 'circle' )
+	    //                                   .attr( 'class', `dot aggregate` )
+	    //                                   .attr( 'r', '3' )
+	    //                                   .attr( 'cx', 0 )
+	    //                                   .attr( 'cy', 50 ),
+	    // cxn =    svg.append('line').attr('class', 'dot-connector'),                                  
+	    officialPath = svg.select('.stream.official path '), aggregatePath = svg.select('.stream.aggregate path ');
 	    svg.on("mousemove", function () {
-	        var m = d3.mouse(this), y = functions_1.closestPoint(officialPath.node(), m);
-	        dot.attr('cx', y[0])
-	            .attr('cy', y[1]);
-	        setText(y[0]);
+	        var m = d3.mouse(this), offPt = functions_1.closestPoint(officialPath.node(), m), aggPt = functions_1.closestPoint(aggregatePath.node(), m);
+	        offDot.attr('cx', offPt[0]).attr('cy', offPt[1]);
+	        // aggDot.attr( 'cx', aggPt[ 0 ] ).attr( 'cy', aggPt[ 1 ] );
+	        // cxn.attr('x1', offPt[0]).attr('x2', aggPt[0]).attr('y1', offPt[1]).attr('y2', aggPt[1])
+	        setText(m[0]);
 	    });
 	    animatePathOn(officialPath);
 	    function setText(x) {
@@ -121,16 +130,54 @@
 	        $(".entry .title." + name).click(function () {
 	            if (!hasName(selectedComponents, name)) {
 	                selectedComponents.push({ streamName: name, weight: 1 });
-	                $(".weight." + name).removeClass('active');
-	                $(".title." + name).removeClass('active');
+	                $(".entry." + name).addClass('active');
+	                $(".title." + name).addClass('active');
 	            }
 	            else {
 	                _.remove(selectedComponents, function (comp) { return comp.streamName === name; });
-	                $(".weight." + name).removeClass('active');
+	                $(".entry." + name).removeClass('active');
 	                $(".title." + name).removeClass('active');
+	                $("." + name + ".weight").text('');
 	            }
 	            redraw();
 	        });
+	        $("." + name + ".up").click(function () {
+	            adjustWeight(name, 1);
+	            if (getStreamWeight(name) > 1) {
+	                $("." + name + ".weight").html("<span class=\"times\">x</span>" + getStreamWeight(name));
+	            }
+	            redraw();
+	        });
+	        $("." + name + ".down").click(function () {
+	            var curr = getStreamWeight(name);
+	            if (curr <= 1) {
+	                //if setting it to 0, deactivate 
+	                adjustWeight(name, -1);
+	                $("." + name + ".weight").text('');
+	                _.remove(selectedComponents, function (comp) { return comp.streamName === name; });
+	                $(".entry." + name).removeClass('active');
+	                $(".title." + name).removeClass('active');
+	            }
+	            else {
+	                adjustWeight(name, -1);
+	                $("." + name + ".weight").html("<span class=\"times\">x</span>" + getStreamWeight(name));
+	            }
+	            redraw();
+	        });
+	    }
+	}
+	function adjustWeight(name, amt) {
+	    for (var i = 0; i < selectedComponents.length; i++) {
+	        if (selectedComponents[i].streamName === name) {
+	            selectedComponents[i].weight += amt;
+	        }
+	    }
+	}
+	function getStreamWeight(name) {
+	    for (var i = 0; i < selectedComponents.length; i++) {
+	        if (selectedComponents[i].streamName === name) {
+	            return selectedComponents[i].weight;
+	        }
 	    }
 	}
 	function genRedrawFxn(data) {
@@ -36028,7 +36075,7 @@
 /* 9 */
 /***/ function(module, exports) {
 
-	module.exports = "<!DOCTYPE html>\r\n<html>\r\n\r\n<head>\r\n    <!-- Meta Tag -->\r\n    <meta charset=\"utf-8\">\r\n\r\n    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700|Lato:300,300italic,400,400italic,700,700italic|Raleway:100,300,400,600,800'\r\n          rel='stylesheet' type='text/css'>\r\n    <link rel=\"stylesheet\" href=\"./styles.css\">\r\n\r\n</head>\r\n\r\n<body>\r\n<div class=\"top-bar\">\r\n    <div class=\"viz-title\">Conversations of Democracy</div>\r\n    <div class=\"controls\">\r\n\r\n\r\n        <div class=\"entry twitter\">\r\n            <div class=\"title twitter\">Twitter</div>\r\n            <div class=\"weight twitter\" type=\"number\" value=\"1\"></div>\r\n        </div>\r\n\r\n        <div class=\"entry facebook\">\r\n            <div class=\"title facebook\">Facebook</div>\r\n            <input class=\"weight facebook\" type=\"number\" value=\"1\">\r\n        </div>\r\n\r\n        <div class=\"entry donations\">\r\n            <div class=\"title donations\">Donations</div>\r\n            <input class=\"weight donations\" type=\"number\" value=\"1\">\r\n        </div>\r\n\r\n        <div class=\"entry google\">\r\n            <div class=\"title google\">Google</div>\r\n            <input class=\"weight google\" type=\"number\" value=\"1\">\r\n        </div>\r\n\r\n    </div>\r\n    <div class=\"score\">\r\n        0\r\n    </div>\r\n\r\n</div>\r\n<div class=\"content-wrapper\">\r\n    <div class=\"story\">\r\n        <div class=\"date\"></div>\r\n        <div class=\"headline\"></div>\r\n    </div>\r\n\r\n    <div class=\"target\"></div>\r\n\r\n</div>\r\n\r\n</body>\r\n\r\n</html>\r\n";
+	module.exports = "<!DOCTYPE html>\r\n<html>\r\n\r\n<head>\r\n    <!-- Meta Tag -->\r\n    <meta charset=\"utf-8\">\r\n\r\n    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700|Lato:300,300italic,400,400italic,700,700italic|Raleway:100,300,400,600,800'\r\n          rel='stylesheet' type='text/css'>\r\n    <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css\">\r\n\r\n\r\n    <link rel=\"stylesheet\" href=\"./styles.css\">\r\n\r\n</head>\r\n\r\n<body>\r\n<div class=\"top-bar\">\r\n    <div class=\"viz-title\">Conversations of Democracy</div>\r\n    <div class=\"controls\">\r\n\r\n\r\n        <div class=\"entry twitter\">\r\n            <div class=\"fa fa-chevron-circle-down twitter down\"></div>\r\n            <div class=\"title twitter\"><div>Twitter</div><div class=\"weight twitter\"></div> </div>\r\n            <div class=\"fa fa-chevron-circle-up  twitter up\"></div>\r\n\r\n\r\n        </div>\r\n\r\n        <div class=\"entry facebook\">\r\n            <div class=\"fa fa-chevron-circle-down facebook up\"></div>\r\n            <div class=\"title facebook\"><div>Facebook</div><div class=\"weight facebook\"></div> </div>\r\n            <div class=\"fa fa-chevron-circle-up  facebook down\"></div>\r\n\r\n        </div>\r\n\r\n        <div class=\"entry donations\">\r\n            <div class=\"fa fa-chevron-circle-down donations up\"></div>\r\n            <div class=\"title donations\"><div>Donations</div><div class=\"weight donations\"></div> </div>\r\n            <div class=\"fa fa-chevron-circle-up  donations down\"></div>\r\n\r\n        </div>\r\n\r\n        <div class=\"entry google\">\r\n            <div class=\"fa fa-chevron-circle-down google up\"></div>\r\n            <div class=\"title google\"><div>Google</div><div class=\"weight google\"></div> </div>\r\n            <div class=\"fa fa-chevron-circle-up  google down\"></div>\r\n\r\n        </div>\r\n\r\n    </div>\r\n    <div class=\"score\">\r\n        0\r\n    </div>\r\n\r\n</div>\r\n<div class=\"content-wrapper\">\r\n    <div class=\"story\">\r\n        <div class=\"date\"></div>\r\n        <div class=\"headline\"></div>\r\n    </div>\r\n\r\n    <div class=\"target pristine\"></div>\r\n\r\n</div>\r\n\r\n</body>\r\n\r\n</html>\r\n";
 
 /***/ },
 /* 10 */

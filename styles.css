@@ -42,11 +42,15 @@ html, body {
   .controls .entry {
     display: flex;
     justify-content: center;
+    align-items: center;
     cursor: pointer;
     margin: 0 25px; }
     .controls .entry .title {
       font-size: 1.1em;
-      color: #111; }
+      color: #111;
+      margin: 0 3px;
+      display: flex;
+      align-items: center; }
       .controls .entry .title.twitter.active, .controls .entry .title.twitter:hover {
         color: #1da1f2; }
       .controls .entry .title.facebook.active, .controls .entry .title.facebook:hover {
@@ -55,15 +59,28 @@ html, body {
         color: #ff5722; }
       .controls .entry .title.donations.active, .controls .entry .title.donations:hover {
         color: #009900; }
-    .controls .entry .weight {
-      max-width: 0;
+    .controls .entry .fa {
+      font-size: 0.9em;
       opacity: 0;
+      transition: 400ms linear opacity; }
+      .controls .entry .fa.fa-chevron-circle-up {
+        color: green; }
+      .controls .entry .fa.fa-chevron-circle-down {
+        color: red; }
+    .controls .entry.active .fa {
+      opacity: 1;
+      transition: 2000ms linear opacity; }
+    .controls .entry .weight {
       transition: 150ms linear all;
-      font-weight: 700;
-      margin-left: 5px; }
-      .controls .entry .weight.active {
-        max-width: 25px;
-        opacity: 1; }
+      margin-left: 5px;
+      overflow-y: visible;
+      color: black;
+      font-weight: 600;
+      font-size: 0.9em;
+      position: relative;
+      top: -2px; }
+      .controls .entry .weight .times {
+        font-size: 0.75em; }
 
 /************ story ****************/
 .story {
@@ -86,8 +103,10 @@ html, body {
     font-size: 1.1em;
     font-style: italic;
     font-weight: 200;
-    text-align: center;
     max-width: 500px; }
+
+.dot-connector {
+  stroke: #222; }
 
 /************ paths ****************/
 .stream path {
@@ -119,6 +138,9 @@ html, body {
   z-index: -1; }
   .target.hovered .stream.official path {
     opacity: 0.4; }
+
+.stream .dot {
+  opacity: 0; }
 
 .stream.aggregate path {
   stroke: #222;
