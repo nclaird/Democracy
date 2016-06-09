@@ -14,7 +14,7 @@ const target                                  = d3.select( '.target' ),
       headlineDiv                             = $( '.headline' ),
 
 
-      margin                                  = { top: 55, right: 0, bottom: 50, left: 0 },
+      margin                                  = { top: 50, right: 0, bottom: 20, left: 0 },
       padding                                 = 5,
 
       windowWid                               = $( document ).width(),
