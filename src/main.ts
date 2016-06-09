@@ -56,8 +56,8 @@ d3.json( './data-final.json', (error, rawData)=> {
   const streamData        = prepStreamData( rawData.streams ),
         streams: Stream[] = <Stream[]> _.values( streamData ),
         headlines         = prepHeadlineData( rawData.headlines ),
-        redraw            = genRedrawFxn( streamData ),
-        addHandlers       = genAddHandlerFxn( streamData, redraw ),
+        updateViz            = getUpdateFxn( streamData ),
+        addHandlers       = genAddHandlerFxn( streamData, updateViz ),
         minDate           = d3.min( streams, stream => d3.min( stream.values, entry => entry.date ) ),
         maxDate           = d3.max( streams, stream => d3.max( stream.values, entry => entry.date ) );
 
@@ -136,6 +136,15 @@ d3.json( './data-final.json', (error, rawData)=> {
 
 
 } );
+
+/**
+ * aggStream is the output of the user's algorithm
+ *  officialStream is what we're comparing it to
+ */
+function calcLSR(officialStream: StreamEntry[], aggStream: StreamEntry[]){
+
+  debugger;
+}
 
 
 function genAddHandlerFxn(data, redraw: ()=>void): (name: string)=> void {
@@ -226,15 +235,17 @@ function getStreamWeight(name: string): number{
 }
 
 
-function genRedrawFxn(data): ()=> void {
-  const recalc = genRecalcFxn( data );
-
+function getUpdateFxn(data): ()=> void {
+  const recalc = genRecalcFxn( data )
+      
   return ()=> {
+   let updatedAggStream = recalc();
+   calcLSR(data.official, )
 
     aggStream
         .transition()
         .duration( 500 ).delay(200)
-        .attr( "d", curve( recalc() ) )
+        .attr( "d", curve( updatedAggStream ) )
         .style('opacity', 1);
   }
 }
