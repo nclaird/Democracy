@@ -154,7 +154,9 @@ html, body {
     max-width: 500px;
     text-decoration: none;
     color: $official;
-    &:hover{ color: #4078c0; }
+    &:hover {
+      color: #4078c0;
+    }
 
   }
 
@@ -247,32 +249,34 @@ path.domain {
 
 }
 
-svg { overflow: visible}
+svg {
+  overflow: visible
+}
 
-.storyline { 
-  margin-top:30px;
+.storyline {
+  margin-top: 30px;
   font-size: 1.2em;
   text-align: center;
 }
 
 .tooltip {
-    position: relative;
-    display: inline-block;
-    border-bottom: 1px dotted white;
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted white;
 }
 
 .tooltip .tooltiptext {
-    opacity: 0;
-  font-size:12px!important;
-    background-color: rgba(255,255,255,0.85);
-    color: black;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-    min-width: 400px;
-    /* Position the tooltip */
-    position: absolute;
-    z-index: 1;
+  opacity: 0;
+  font-size: 12px !important;
+  background-color: rgba(255, 255, 255, 0.85);
+  color: black;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  min-width: 400px;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
 }
 
 /* Show the tooltip text when you mouse over the tooltip container */

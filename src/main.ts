@@ -8,50 +8,50 @@ import './data-final.json';
 import { Stream, Headline, SelectedComponent, StreamEntry, valueOnDate } from './models';
 
 
-const target                                  = d3.select( '.target' ),
-      dateDiv                                 = $( '.date' ),
+const target                  = d3.select( '.target' ),
+      dateDiv                 = $( '.date' ),
 
-      headlineDiv                             = $( '.headline' ),
-
-
-      margin                                  = { top: 50, right: 0, bottom: 20, left: 0 },
-      padding                                 = 5,
-
-      windowWid                               = $( document ).width(),
-      windowHt                                = $( document ).height(),
-
-      svgHt                                   = windowHt - margin.top - margin.bottom,
-      svgWid                                  = windowWid - margin.left - margin.right,
-
-      toX                                     = d3.time.scale().range( [ 0, svgWid - padding ] ),
-      toY                                     = d3.scale.linear()
-                                                  .domain( [ 0, 1 ] ) // we already know the domain of this bc we're normalizing
-                                                  .range( [ svgHt - padding, 0 ] ),
+      headlineDiv             = $( '.headline' ),
 
 
-      svg                                     = target.append( 'svg' )
-                                                      .attr( 'height', svgHt )
-                                                      .attr( 'width', svgWid ),
+      margin                  = { top: 50, right: 0, bottom: 20, left: 0 },
+      padding                 = 5,
 
-      inputDateFormat                         = d3.time.format( '%Y-%m-%d' ),
-      displayDateFormat                       = d3.time.format( '%a, %B %e ' ),
+      windowWid               = $( document ).width(),
+      windowHt                = $( document ).height(),
 
-      curve                                   = d3.svg.line()
-                                                  .interpolate( "basis" )
-                                                  .x( d => toX( d.date ) )
-                                                  .y( d => toY( d.normValue ) ),
-      xAxis                                   = d3.svg.axis()
-                                                  .scale( toX )
-                                                  .orient( "bottom" )
-                                                  .ticks( d3.time.weeks, 2 )
-                                                  .tickSize( -(svgHt-90), 1 )
-                                                  .tickFormat( d3.time.format( "%B %e" ) ),
+      svgHt                   = windowHt - margin.top - margin.bottom,
+      svgWid                  = windowWid - margin.left - margin.right,
+
+      toX                     = d3.time.scale().range( [ 0, svgWid - padding ] ),
+      toY                     = d3.scale.linear()
+                                  .domain( [ 0, 1 ] ) // we already know the domain of this bc we're normalizing
+                                  .range( [ svgHt - padding, 0 ] ),
+
+
+      svg                     = target.append( 'svg' )
+                                      .attr( 'height', svgHt )
+                                      .attr( 'width', svgWid ),
+
+      inputDateFormat         = d3.time.format( '%Y-%m-%d' ),
+      displayDateFormat       = d3.time.format( '%a, %B %e ' ),
+
+      curve                   = d3.svg.line()
+                                  .interpolate( "basis" )
+                                  .x( d => toX( d.date ) )
+                                  .y( d => toY( d.normValue ) ),
+      xAxis                   = d3.svg.axis()
+                                  .scale( toX )
+                                  .orient( "bottom" )
+                                  .ticks( d3.time.weeks, 2 )
+                                  .tickSize( -(svgHt - 90), 1 )
+                                  .tickFormat( d3.time.format( "%B %e" ) ),
 
       selectedComponents: SelectedComponent[] = [],
 
-      aggStream                               = svg.append( 'g' )
-                                                   .attr( 'class', 'aggregate stream' )
-                                                   .append( 'path' );
+      aggStream               = svg.append( 'g' )
+                                   .attr( 'class', 'aggregate stream' )
+                                   .append( 'path' );
 
 
 d3.json( './data-final.json', (error, rawData)=> {
@@ -89,12 +89,13 @@ d3.json( './data-final.json', (error, rawData)=> {
 
   svg.on( "mousemove", function () {
     let m = d3.mouse( this );
-
     setText( m[ 0 ] );
 
   } );
 
   animatePathOn( officialPath );
+
+
 
 
   function setText(x: number) {
@@ -131,7 +132,7 @@ function calcLSR(officialStream: StreamEntry[], aggStream: StreamEntry[]) {
     singleVar = singleVar * singleVar;
     Variance = Variance + singleVar;
   }
-  return (100 - Variance).toFixed(2);
+  return (100 - Variance).toFixed( 2 );
 }
 
 
@@ -161,21 +162,16 @@ function genAddHandlerFxn(data, update: ()=>void): (name: string)=> void {
     $( `.entry .title.${name}` ).click( ()=> {
       if (!hasName( selectedComponents, name )) {
         selectedComponents.push( { streamName: name, weight: 1 } );
-        $( `.entry.${name}` ).addClass( 'active' )
-        $( `.title.${name}` ).addClass( 'active' )
+        $( `.entry.${name}` ).addClass( 'active' );
+        $( `.title.${name}` ).addClass( 'active' );
 
       } else {
         _.remove( selectedComponents, (comp)=> comp.streamName === name );
-        $( `.entry.${name}` ).removeClass( 'active' )
-        $( `.title.${name}` ).removeClass( 'active' )
+        $( `.entry.${name}` ).removeClass( 'active' );
+        $( `.title.${name}` ).removeClass( 'active' );
         $( `.${name}.weight` ).text( '' );
 
-        if (selectedComponents.length == 0) {
-          //  aggStream.attr('d', '')
-        }
-
       }
-      //   $( `.stream` ).removeClass( 'visible' );
       update();
     } );
 
