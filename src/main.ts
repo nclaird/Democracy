@@ -8,64 +8,63 @@ import './data-final.json';
 import { Stream, Headline, SelectedComponent, StreamEntry, valueOnDate } from './models';
 
 
-const target                  = d3.select( '.target' ),
-      dateDiv                 = $( '.date' ),
+const target            = d3.select( '.target' ),
 
-      headlineDiv             = $( '.headline' ),
+      dateDiv           = $( '.date' ),
+      headlineDiv       = $( '.headline' ),
 
+      margin            = { top: 50, right: 0, bottom: 20, left: 0 },
+      padding           = 5,
 
-      margin                  = { top: 50, right: 0, bottom: 20, left: 0 },
-      padding                 = 5,
+      windowWid         = $( document ).width(),
+      windowHt          = $( document ).height(),
 
-      windowWid               = $( document ).width(),
-      windowHt                = $( document ).height(),
+      svgHt             = windowHt - margin.top - margin.bottom,
+      svgWid            = windowWid - margin.left - margin.right,
 
-      svgHt                   = windowHt - margin.top - margin.bottom,
-      svgWid                  = windowWid - margin.left - margin.right,
+      toX               = d3.time.scale().range( [ 0, svgWid - padding ] ),
+      toY               = d3.scale.linear()
+                            .domain( [ 0, 1 ] ) // we already know the domain of this bc we're normalizing
+                            .range( [ svgHt - padding, 0 ] ),
 
-      toX                     = d3.time.scale().range( [ 0, svgWid - padding ] ),
-      toY                     = d3.scale.linear()
-                                  .domain( [ 0, 1 ] ) // we already know the domain of this bc we're normalizing
-                                  .range( [ svgHt - padding, 0 ] ),
+      svg               = target.append( 'svg' )
+                                .attr( 'height', svgHt )
+                                .attr( 'width', svgWid ),
 
+      curve             = d3.svg.line()
+                            .interpolate( "basis" )
+                            .x( d => toX( d.date ) )
+                            .y( d => toY( d.normValue ) ),
+      xAxis             = d3.svg.axis()
+                            .scale( toX )
+                            .orient( "bottom" )
+                            .ticks( d3.time.weeks, 2 )
+                            .tickSize( -(svgHt - 90), 1 )
+                            .tickFormat( d3.time.format( "%B %e" ) ),
 
-      svg                     = target.append( 'svg' )
-                                      .attr( 'height', svgHt )
-                                      .attr( 'width', svgWid ),
-
-      inputDateFormat         = d3.time.format( '%Y-%m-%d' ),
-      displayDateFormat       = d3.time.format( '%a, %B %e ' ),
-
-      curve                   = d3.svg.line()
-                                  .interpolate( "basis" )
-                                  .x( d => toX( d.date ) )
-                                  .y( d => toY( d.normValue ) ),
-      xAxis                   = d3.svg.axis()
-                                  .scale( toX )
-                                  .orient( "bottom" )
-                                  .ticks( d3.time.weeks, 2 )
-                                  .tickSize( -(svgHt - 90), 1 )
-                                  .tickFormat( d3.time.format( "%B %e" ) ),
+      inputDateFormat   = d3.time.format( '%Y-%m-%d' ),
+      displayDateFormat = d3.time.format( '%a, %B %e ' ),
 
       selectedComponents: SelectedComponent[] = [],
-
-      aggStream               = svg.append( 'g' )
-                                   .attr( 'class', 'aggregate stream' )
-                                   .append( 'path' );
+      aggStream         = svg.append( 'g' )
+                             .attr( 'class', 'aggregate stream' )
+                             .append( 'path' );
 
 
 d3.json( './data-final.json', (error, rawData)=> {
   const streamData        = prepStreamData( rawData.streams ),
         streams: Stream[] = <Stream[]> _.values( streamData ),
         headlines         = prepHeadlineData( rawData.headlines ),
-        updateViz         = getUpdateFxn( streamData ),
-        addHandlers       = genAddHandlerFxn( streamData, updateViz ),
+
+        updateViz         = generateUpdateFunction( streamData ),
+        addHandlers       = generateAddHandlersFunction( streamData, updateViz ),
+        setText           = generateSetHeadlineFunction( headlines ),
+
         minDate           = d3.min( streams, stream => d3.min( stream.values, entry => entry.date ) ),
         maxDate           = d3.max( streams, stream => d3.max( stream.values, entry => entry.date ) );
-
   toX.domain( [ minDate, maxDate ] );
 
-
+  //draw x axis
   svg.append( "g" )
      .attr( "class", "x axis" )
      .attr( "transform", "translate(0," + svgHt + ")" )
@@ -75,47 +74,22 @@ d3.json( './data-final.json', (error, rawData)=> {
      .attr( "x", 6 )
      .attr( "y", 6 );
 
-
-  const gs: Selection<Stream> = svg.selectAll( '.stream' ).data( streams )
-                                   .enter()
-                                   .append( 'g' )
-                                   .attr( 'class', (d)=>`stream ${d.name}` ),
-
-        paths                 = gs.append( 'path' )
-                                  .attr( "d", d => curve( d.values ) )
-                                  .each( d => addHandlers( d.name ) ),
-        officialPath          = svg.select( '.stream.official path ' );
+  //draw streams
+  svg.selectAll( '.stream' ).data( streams )
+     .enter()
+     .append( 'g' )
+     .attr( 'class', (d)=>`stream ${d.name}` )
+     .append( 'path' )
+       .attr( "d", d => curve( d.values ) )
+       .each( d => addHandlers( d.name ) );
 
 
-  svg.on( "mousemove", function () {
-    let m = d3.mouse( this );
-    setText( m[ 0 ] );
-
-  } );
-
-  animatePathOn( officialPath );
+  //add mousemove listener for setting headline text
+  svg.on( "mousemove", function () { setText( d3.mouse( this )[ 0 ] ); } );
 
 
-
-
-  function setText(x: number) {
-    let date     = toX.invert( x ),
-        headline = findClosestHeadlineDate( date );
-
-    dateDiv.html( displayDateFormat( headline.date ) );
-    headlineDiv.html( `<a href="${headline.url}" target="_blank">${headline.headline}</a> ` );
-
-    // headlineDiv.html( `${headline.headline}` );
-
-    function findClosestHeadlineDate(date: Date): Headline {
-      let i = 0;
-      for (; i < headlines.length && headlines[ i ].date < date; i++) { }
-      console.log()
-      return headlines[ i ];
-
-    }
-
-  }
+  //animate drawing the official line
+  animatePathOn( svg.select( '.stream.official path ' ) );
 
 
 } );
@@ -136,12 +110,12 @@ function calcLSR(officialStream: StreamEntry[], aggStream: StreamEntry[]) {
 }
 
 
-function genAddHandlerFxn(data, update: ()=>void): (name: string)=> void {
+function generateAddHandlersFunction(data, update: ()=>void): (name: string)=> void {
 
   return (name: string) => {
     addStreamHoverHandlers( name );
     addStreamClickHandlers( name );
-  }
+  };
 
   function addStreamHoverHandlers(name: string): void {
     $( `.${name}.entry` ).hover( ()=> {
@@ -205,42 +179,8 @@ function genAddHandlerFxn(data, update: ()=>void): (name: string)=> void {
 
 }
 
-function adjustWeight(name: string, amt: number): number {
-  for (let i = 0; i < selectedComponents.length; i++) {
-    if (selectedComponents[ i ].streamName === name) {
-      selectedComponents[ i ].weight += amt;
-    }
-  }
-}
 
-function getStreamWeight(name: string): number {
-  for (let i = 0; i < selectedComponents.length; i++) {
-    if (selectedComponents[ i ].streamName === name) {
-      return selectedComponents[ i ].weight;
-    }
-  }
-}
-
-
-function getUpdateFxn(data): ()=> void {
-  const recalc = genRecalcFxn( data )
-
-  return ()=> {
-    let updatedAggStream = recalc();
-
-    $( '.score' ).text( calcLSR( data.official.values, updatedAggStream ) );
-
-
-    aggStream
-        .transition()
-        .duration( 500 ).delay( 200 )
-        .attr( "d", curve( updatedAggStream ) )
-        .style( 'opacity', 1 );
-  }
-}
-
-
-function genRecalcFxn(data) {
+function generateRecalculateFunction(data) {
   return function recalculateAggregateStream(): StreamEntry[] {
 
     //temporary hack to only use shared dates
@@ -266,6 +206,60 @@ function genRecalcFxn(data) {
 
     } );
 
+  }
+}
+
+function generateSetHeadlineFunction(headlines: Headline[]) {
+  return function setText(x: number): void {
+    let date     = toX.invert( x ),
+        headline = findClosestHeadlineDate( date );
+
+    dateDiv.html( displayDateFormat( headline.date ) );
+    headlineDiv.html( `<a href="${headline.url}" target="_blank">${headline.headline}</a> ` );
+
+    function findClosestHeadlineDate(date: Date): Headline {
+      let i = 0;
+      for (; i < headlines.length && headlines[ i ].date < date; i++) { }
+      console.log()
+      return headlines[ i ];
+
+    }
+
+  }
+}
+
+
+function adjustWeight(name: string, amt: number): number {
+  for (let i = 0; i < selectedComponents.length; i++) {
+    if (selectedComponents[ i ].streamName === name) {
+      selectedComponents[ i ].weight += amt;
+    }
+  }
+}
+
+function getStreamWeight(name: string): number {
+  for (let i = 0; i < selectedComponents.length; i++) {
+    if (selectedComponents[ i ].streamName === name) {
+      return selectedComponents[ i ].weight;
+    }
+  }
+}
+
+
+function generateUpdateFunction(data): ()=> void {
+  const recalc = generateRecalculateFunction( data )
+
+  return ()=> {
+    let updatedAggStream = recalc();
+
+    $( '.score' ).text( calcLSR( data.official.values, updatedAggStream ) );
+
+
+    aggStream
+        .transition()
+        .duration( 500 ).delay( 200 )
+        .attr( "d", curve( updatedAggStream ) )
+        .style( 'opacity', 1 );
   }
 }
 
