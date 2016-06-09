@@ -147,7 +147,7 @@ function calcLSR(officialStream: StreamEntry[], aggStream: StreamEntry[]){
 }
 
 
-function genAddHandlerFxn(data, redraw: ()=>void): (name: string)=> void {
+function genAddHandlerFxn(data, update: ()=>void): (name: string)=> void {
 
   return (name: string) => {
     addStreamHoverHandlers( name );
@@ -185,7 +185,7 @@ function genAddHandlerFxn(data, redraw: ()=>void): (name: string)=> void {
 
       }
       $( `.stream` ).removeClass( 'visible' );
-      redraw();
+      update();
     } );
     
     $(`.${name}.up`).click(()=> {
@@ -193,7 +193,7 @@ function genAddHandlerFxn(data, redraw: ()=>void): (name: string)=> void {
       if (getStreamWeight(name) > 1){
         $( `.${name}.weight` ).html( `<span class="times">x</span>${getStreamWeight( name )}` );
       }
-      redraw();
+      update();
     });
 
     $( `.${name}.down` ).click( ()=> {
@@ -210,7 +210,7 @@ function genAddHandlerFxn(data, redraw: ()=>void): (name: string)=> void {
               $( `.${name}.weight` ).html(`<span class="times">x</span>${getStreamWeight(name)}`);
 
       }
-      redraw();
+      update();
     } )
 
 
@@ -240,7 +240,7 @@ function getUpdateFxn(data): ()=> void {
       
   return ()=> {
    let updatedAggStream = recalc();
-   calcLSR(data.official, )
+   calcLSR(data.official.values, updatedAggStream);
 
     aggStream
         .transition()
