@@ -1,0 +1,503 @@
+{
+  "headlines": [
+    {
+      "date": "5/29/2016",
+      "headline": "Rise of Donald Trump Tracks Growing Debate Over Global Fascism"
+    },
+    {
+      "date": "5/22/2016",
+      "headline": "These Wealthy People Refuse to Give Donald Trump Money. Here’s Why."
+    },
+    {
+      "date": "5/15/2016",
+      "headline": "GOP Leaders Describe Unity as the Education of Donald Trump"
+    },
+    {
+      "date": "5/8/2016",
+      "headline": "John McCain Demands Donald Trump Make Amends to Veterans"
+    },
+    {
+      "date": "5/1/2016",
+      "headline": "Run on a Ticket With Donald Trump? No"
+    },
+    {
+      "date": "4/24/2016",
+      "headline": "Donald Trump Tones It Down"
+    },
+    {
+      "date": "4/17/2016",
+      "headline": "Donald Trump"
+    },
+    {
+      "date": "4/10/2016",
+      "headline": "Donald Trump Defends 'Safe' Rallies"
+    },
+    {
+      "date": "4/3/2016",
+      "headline": "With New Effort"
+    },
+    {
+      "date": "3/27/2016",
+      "headline": "Donald Trump Effigies Burned in Mexico"
+    },
+    {
+      "date": "3/20/2016",
+      "headline": "Donald Trump Faults Protesters Over Violence"
+    },
+    {
+      "date": "3/13/2016",
+      "headline": "Donald Trump Says He May Pay Legal Fees of Accused Attacker From Rally"
+    },
+    {
+      "date": "3/6/2016",
+      "headline": "Donald Trump Considered Path to Presidency Starting at Governor’s Mansion in New York"
+    },
+    {
+      "date": "2/28/2016",
+      "headline": "Jeff Sessions"
+    },
+    {
+      "date": "2/21/2016",
+      "headline": "Donald Trump Struggles to Explain Comments on Persian Gulf War From 2002"
+    },
+    {
+      "date": "2/14/2016",
+      "headline": "Ted Cruz Attacks Donald Trump Over Planned Parenthood in New Ad"
+    },
+    {
+      "date": "2/7/2016",
+      "headline": "Donald Trump Ad Suggests He Has a Rainbow Coalition of Support"
+    },
+    {
+      "date": "1/31/2016",
+      "headline": "Donald Trump Faces His Iowa Test"
+    },
+    {
+      "date": "1/24/2016",
+      "headline": "Donald Trump Says Megyn Kelly Should Skip Debate; Fox Says She'll Be There"
+    },
+    {
+      "date": "1/17/2016",
+      "headline": "Donald Trump Gets Personal in Attacks on Ted Cruz at Tea Party Convention"
+    },
+    {
+      "date": "1/10/2016",
+      "headline": "Donald Trump Says He’ll Pull Scotland Investment if Britain Bars Him"
+    },
+    {
+      "date": "1/3/2016",
+      "headline": "Donald Trump Shrugs Off Appearance in Terrorist Video"
+    }
+  ],
+  "streams": [
+    {
+      "name": "bugIsIgnoringFirstElement",
+      "values": []
+    },
+    {
+      "name": "twitter",
+      "values": [
+        {
+          "value": 68035,
+          "date": "2016-02-20"
+        },
+        {
+          "value": 148470,
+          "date": "2016-03-26"
+        },
+        {
+          "value": 113873,
+          "date": "2016-04-16"
+        },
+        {
+          "value": 119991,
+          "date": "2016-04-09"
+        },
+        {
+          "value": 127717,
+          "date": "2016-03-19"
+        },
+        {
+          "value": 121279,
+          "date": "2016-04-23"
+        },
+        {
+          "value": 104443,
+          "date": "2016-04-30"
+        },
+        {
+          "value": 63006,
+          "date": "2016-01-30"
+        },
+        {
+          "value": 137246,
+          "date": "2016-05-28"
+        },
+        {
+          "value": 47721,
+          "date": "2016-01-16"
+        },
+        {
+          "value": 59676,
+          "date": "2016-01-09"
+        },
+        {
+          "value": 142042,
+          "date": "2016-04-02"
+        },
+        {
+          "value": 114386,
+          "date": "2016-03-12"
+        },
+        {
+          "value": 123559,
+          "date": "2016-05-21"
+        },
+        {
+          "value": 103692,
+          "date": "2016-02-13"
+        },
+        {
+          "value": 108711,
+          "date": "2016-05-07"
+        },
+        {
+          "value": 68427,
+          "date": "2016-02-06"
+        },
+        {
+          "value": 140027,
+          "date": "2016-05-14"
+        },
+        {
+          "value": 67486,
+          "date": "2016-02-27"
+        },
+        {
+          "value": 39707,
+          "date": "2016-01-23"
+        },
+        {
+          "value": 112620,
+          "date": "2016-03-05"
+        }
+      ]
+    },
+    {
+      "name": "facebook",
+      "values": [
+        {
+          "value": 1314885,
+          "date": "2016-02-20"
+        },
+        {
+          "value": 1852417,
+          "date": "2016-03-26"
+        },
+        {
+          "value": 1120087,
+          "date": "2016-04-16"
+        },
+        {
+          "value": 1115516,
+          "date": "2016-04-09"
+        },
+        {
+          "value": 2123647,
+          "date": "2016-03-19"
+        },
+        {
+          "value": 1228938,
+          "date": "2016-04-23"
+        },
+        {
+          "value": 1417650,
+          "date": "2016-05-28"
+        },
+        {
+          "value": 1263832,
+          "date": "2016-01-16"
+        },
+        {
+          "value": 1243509,
+          "date": "2016-01-09"
+        },
+        {
+          "value": 1595247,
+          "date": "2016-04-02"
+        },
+        {
+          "value": 1902587,
+          "date": "2016-03-12"
+        },
+        {
+          "value": 1195250,
+          "date": "2016-05-21"
+        },
+        {
+          "value": 1279424,
+          "date": "2016-02-13"
+        },
+        {
+          "value": 4526788,
+          "date": "2016-05-07"
+        },
+        {
+          "value": 1093730,
+          "date": "2016-02-06"
+        },
+        {
+          "value": 1389749,
+          "date": "2016-05-14"
+        },
+        {
+          "value": 1650921,
+          "date": "2016-02-27"
+        },
+        {
+          "value": 1176194,
+          "date": "2016-01-23"
+        },
+        {
+          "value": 2029043,
+          "date": "2016-03-05"
+        }
+      ]
+    },
+    {
+      "name": "google",
+      "values": [
+        {
+          "value": 37,
+          "date": "2016-02-20"
+        },
+        {
+          "value": 54,
+          "date": "2016-03-26"
+        },
+        {
+          "value": 31,
+          "date": "2016-04-16"
+        },
+        {
+          "value": 38,
+          "date": "2016-04-09"
+        },
+        {
+          "value": 78,
+          "date": "2016-03-19"
+        },
+        {
+          "value": 34,
+          "date": "2016-04-23"
+        },
+        {
+          "value": 37,
+          "date": "2016-04-30"
+        },
+        {
+          "value": 40,
+          "date": "2016-01-30"
+        },
+        {
+          "value": 28,
+          "date": "2016-06-04"
+        },
+        {
+          "value": 31,
+          "date": "2016-05-28"
+        },
+        {
+          "value": 26,
+          "date": "2016-01-16"
+        },
+        {
+          "value": 23,
+          "date": "2016-01-09"
+        },
+        {
+          "value": 45,
+          "date": "2016-04-02"
+        },
+        {
+          "value": 71,
+          "date": "2016-03-12"
+        },
+        {
+          "value": 34,
+          "date": "2016-05-21"
+        },
+        {
+          "value": 37,
+          "date": "2016-02-13"
+        },
+        {
+          "value": 56,
+          "date": "2016-05-07"
+        },
+        {
+          "value": 41,
+          "date": "2016-02-06"
+        },
+        {
+          "value": 38,
+          "date": "2016-05-14"
+        },
+        {
+          "value": 63,
+          "date": "2016-02-27"
+        },
+        {
+          "value": 29,
+          "date": "2016-01-23"
+        },
+        {
+          "value": 100,
+          "date": "2016-03-05"
+        }
+      ]
+    },
+    {
+      "name": "donations",
+      "values": [
+        {
+          "value": 161988.01,
+          "date": "2016-02-20"
+        },
+        {
+          "value": 79773.76,
+          "date": "2016-03-26"
+        },
+        {
+          "value": 103015.69,
+          "date": "2016-04-16"
+        },
+        {
+          "value": 67101.49,
+          "date": "2016-04-09"
+        },
+        {
+          "value": 126378.04,
+          "date": "2016-03-19"
+        },
+        {
+          "value": 143934.81,
+          "date": "2016-04-23"
+        },
+        {
+          "value": 6435.67,
+          "date": "2016-04-30"
+        },
+        {
+          "value": 77359.55,
+          "date": "2016-01-30"
+        },
+        {
+          "value": 66462.63,
+          "date": "2016-01-16"
+        },
+        {
+          "value": 31502.59,
+          "date": "2016-01-09"
+        },
+        {
+          "value": 73616.91,
+          "date": "2016-04-02"
+        },
+        {
+          "value": 162088.3,
+          "date": "2016-03-12"
+        },
+        {
+          "value": 67409.03,
+          "date": "2016-02-13"
+        },
+        {
+          "value": 98054.39,
+          "date": "2016-02-06"
+        },
+        {
+          "value": 185699.8,
+          "date": "2016-02-27"
+        },
+        {
+          "value": 45683.75,
+          "date": "2016-01-23"
+        },
+        {
+          "value": 132083.07,
+          "date": "2016-03-05"
+        }
+      ]
+    },
+    {
+      "name": "official",
+      "values": [
+        {
+          "value": 33.5,
+          "date": "2016-02-20"
+        },
+        {
+          "value": 40.75,
+          "date": "2016-03-26"
+        },
+        {
+          "value": 44.0,
+          "date": "2016-04-16"
+        },
+        {
+          "value": 41.75,
+          "date": "2016-04-09"
+        },
+        {
+          "value": 43.38,
+          "date": "2016-03-19"
+        },
+        {
+          "value": 46.5,
+          "date": "2016-04-23"
+        },
+        {
+          "value": 47.75,
+          "date": "2016-04-30"
+        },
+        {
+          "value": 28.0,
+          "date": "2016-01-30"
+        },
+        {
+          "value": 35.0,
+          "date": "2016-01-16"
+        },
+        {
+          "value": 34.5,
+          "date": "2016-01-09"
+        },
+        {
+          "value": 37.5,
+          "date": "2016-04-02"
+        },
+        {
+          "value": 43.0,
+          "date": "2016-03-12"
+        },
+        {
+          "value": 34.88,
+          "date": "2016-02-13"
+        },
+        {
+          "value": 49.0,
+          "date": "2016-02-27"
+        },
+        {
+          "value": 35.0,
+          "date": "2016-01-23"
+        },
+        {
+          "value": 32.0,
+          "date": "2016-03-05"
+        }
+      ]
+    }
+  ]
+}
