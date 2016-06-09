@@ -91,7 +91,8 @@ html, body {
   align-items: start;
   height: 0;
   overflow-y: visible;
-  align-self: flex-start; }
+  align-self: flex-start;
+  z-index: 1000; }
   .story .date {
     font-weight: 300;
     padding: 5px 0;
@@ -99,14 +100,31 @@ html, body {
     border-top: 1px solid #888;
     text-align: center;
     width: 385px; }
-  .story .headline {
-    font-size: 1.1em;
+  .story .headline a {
     font-style: italic;
     font-weight: 200;
-    max-width: 500px; }
+    max-width: 500px;
+    text-decoration: none;
+    color: #888; }
+    .story .headline a:hover {
+      color: #4078c0; }
 
 .dot-connector {
   stroke: #888; }
+
+.axis text {
+  font-size: 10px;
+  text-anchor: middle; }
+
+.axis path,
+.axis line {
+  z-index: -1;
+  fill: none;
+  stroke: #999;
+  shape-rendering: crispEdges; }
+
+path.domain {
+  opacity: 0; }
 
 /************ paths ****************/
 .stream path {
@@ -145,5 +163,8 @@ html, body {
 .stream.aggregate path {
   stroke: #111;
   opacity: 1; }
+
+svg {
+  overflow: visible; }
 
 /*# sourceMappingURL=styles.css.map*/

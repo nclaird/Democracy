@@ -52,56 +52,48 @@
 	__webpack_require__(9);
 	__webpack_require__(10);
 	var models_1 = __webpack_require__(11);
-	var functions_1 = __webpack_require__(12);
 	var target = d3.select('.target'), dateDiv = $('.date'), headlineDiv = $('.headline'), margin = { top: 55, right: 0, bottom: 50, left: 0 }, padding = 5, windowWid = $(document).width(), windowHt = $(document).height(), svgHt = windowHt - margin.top - margin.bottom, svgWid = windowWid - margin.left - margin.right, toX = d3.time.scale().range([0, svgWid - padding]), toY = d3.scale.linear()
 	    .domain([0, 1]) // we already know the domain of this bc we're normalizing
 	    .range([svgHt - padding, 0]), svg = target.append('svg')
 	    .attr('height', svgHt)
-	    .attr('width', svgWid), inputDateFormat = d3.time.format('%Y-%m-%d'), displayDateFormat = d3.time.format('%a, %B %e '), hlDateFormat = d3.time.format('%m/%d/%Y'), curve = d3.svg.line()
+	    .attr('width', svgWid), inputDateFormat = d3.time.format('%Y-%m-%d'), displayDateFormat = d3.time.format('%a, %B %e '), curve = d3.svg.line()
 	    .interpolate("basis")
 	    .x(function (d) { return toX(d.date); })
-	    .y(function (d) { return toY(d.normValue); }), selectedComponents = [], aggStream = svg.append('g')
+	    .y(function (d) { return toY(d.normValue); }), xAxis = d3.svg.axis()
+	    .scale(toX)
+	    .orient("bottom")
+	    .ticks(d3.time.weeks, 2)
+	    .tickSize(-(svgHt - 90), 1)
+	    .tickFormat(d3.time.format("%B %e")), selectedComponents = [], aggStream = svg.append('g')
 	    .attr('class', 'aggregate stream')
 	    .append('path');
 	d3.json('./data-final.json', function (error, rawData) {
 	    var streamData = prepStreamData(rawData.streams), streams = _.values(streamData), headlines = prepHeadlineData(rawData.headlines), updateViz = getUpdateFxn(streamData), addHandlers = genAddHandlerFxn(streamData, updateViz), minDate = d3.min(streams, function (stream) { return d3.min(stream.values, function (entry) { return entry.date; }); }), maxDate = d3.max(streams, function (stream) { return d3.max(stream.values, function (entry) { return entry.date; }); });
 	    toX.domain([minDate, maxDate]);
-	    var pristine = true;
+	    svg.append("g")
+	        .attr("class", "x axis")
+	        .attr("transform", "translate(0," + svgHt + ")")
+	        .call(xAxis)
+	        .selectAll(".tick text")
+	        .style("text-anchor", "start")
+	        .attr("x", 6)
+	        .attr("y", 6);
 	    var gs = svg.selectAll('.stream').data(streams)
 	        .enter()
 	        .append('g')
 	        .attr('class', function (d) { return ("stream " + d.name); }), paths = gs.append('path')
 	        .attr("d", function (d) { return curve(d.values); })
-	        .each(function (d) { return addHandlers(d.name); }), 
-	    // dots = gs.append( 'circle' )
-	    //               .attr( 'class', d => `dot ${d.name}` )
-	    //               .attr( 'r', '3' )
-	    //               .attr('cx', 0)
-	    //               .attr('cy', 50)             ,
-	    offDot = svg.append('circle')
-	        .attr('class', "dot official")
-	        .attr('r', '3')
-	        .attr('cx', 0)
-	        .attr('cy', 50), 
-	    // aggDot = svg.append( 'circle' )
-	    //                                   .attr( 'class', `dot aggregate` )
-	    //                                   .attr( 'r', '3' )
-	    //                                   .attr( 'cx', 0 )
-	    //                                   .attr( 'cy', 50 ),
-	    // cxn =    svg.append('line').attr('class', 'dot-connector'),                                  
-	    officialPath = svg.select('.stream.official path '), aggregatePath = svg.select('.stream.aggregate path ');
+	        .each(function (d) { return addHandlers(d.name); }), officialPath = svg.select('.stream.official path ');
 	    svg.on("mousemove", function () {
-	        var m = d3.mouse(this), offPt = functions_1.closestPoint(officialPath.node(), m), aggPt = functions_1.closestPoint(aggregatePath.node(), m);
-	        offDot.attr('cx', offPt[0]).attr('cy', offPt[1]);
-	        // aggDot.attr( 'cx', aggPt[ 0 ] ).attr( 'cy', aggPt[ 1 ] );
-	        // cxn.attr('x1', offPt[0]).attr('x2', aggPt[0]).attr('y1', offPt[1]).attr('y2', aggPt[1])
+	        var m = d3.mouse(this);
 	        setText(m[0]);
 	    });
 	    animatePathOn(officialPath);
 	    function setText(x) {
 	        var date = toX.invert(x), headline = findClosestHeadlineDate(date);
-	        dateDiv.text(displayDateFormat(headline.date));
-	        headlineDiv.text(headline.headline);
+	        dateDiv.html(displayDateFormat(headline.date));
+	        headlineDiv.html("<a href=\"" + headline.url + "\" target=\"_blank\">" + headline.headline + "</a> ");
+	        // headlineDiv.html( `${headline.headline}` );
 	        function findClosestHeadlineDate(date) {
 	            var i = 0;
 	            for (; i < headlines.length && headlines[i].date < date; i++) { }
@@ -116,14 +108,13 @@
 	 */
 	function calcLSR(officialStream, aggStream) {
 	    var Variance = 0;
-        var singleVar = 0;
-        for(var inc = 0;inc<officialStream.length;inc++){
-            singleVar = officialStream[inc].normValue + aggStream[inc].normValue;
-            singleVar = singleVar * singleVar;
-            Variance = Variance + singleVar;
-        }
-    return(Variance);
-        debugger;
+	    var singleVar = 0;
+	    for (var inc = 0; inc < officialStream.length; inc++) {
+	        singleVar = officialStream[inc].normValue + aggStream[inc].normValue;
+	        singleVar = singleVar * singleVar;
+	        Variance = Variance + singleVar;
+	    }
+	    return Math.round(Variance);
 	}
 	function genAddHandlerFxn(data, update) {
 	    return function (name) {
@@ -153,8 +144,10 @@
 	                $(".entry." + name).removeClass('active');
 	                $(".title." + name).removeClass('active');
 	                $("." + name + ".weight").text('');
+	                if (selectedComponents.length == 0) {
+	                }
 	            }
-	            $(".stream").removeClass('visible');
+	            //   $( `.stream` ).removeClass( 'visible' );
 	            update();
 	        });
 	        $("." + name + ".up").click(function () {
@@ -200,7 +193,7 @@
 	    var recalc = genRecalcFxn(data);
 	    return function () {
 	        var updatedAggStream = recalc();
-	        calcLSR(data.official.values, updatedAggStream);
+	        $('.score').text(calcLSR(data.official.values, updatedAggStream));
 	        aggStream
 	            .transition()
 	            .duration(500).delay(200)
@@ -251,7 +244,8 @@
 	function prepHeadlineData(raw) {
 	    return raw.map(function (it) { return ({
 	        headline: it.headline,
-	        date: hlDateFormat.parse(it.date)
+	        url: it.url,
+	        date: inputDateFormat.parse(it.date)
 	    }); }).sort(function (x, y) { return x.date - y.date; });
 	}
 	function animatePath(path, on, duration) {
@@ -36095,7 +36089,7 @@
 /* 9 */
 /***/ function(module, exports) {
 
-	module.exports = "<!DOCTYPE html>\r\n<html>\r\n\r\n<head>\r\n    <!-- Meta Tag -->\r\n    <meta charset=\"utf-8\">\r\n\r\n    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700|Lato:300,300italic,400,400italic,700,700italic|Raleway:100,300,400,600,800'\r\n          rel='stylesheet' type='text/css'>\r\n    <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css\">\r\n\r\n\r\n    <link rel=\"stylesheet\" href=\"./styles.css\">\r\n\r\n</head>\r\n\r\n<body>\r\n<div class=\"top-bar\">\r\n    <div class=\"viz-title\">Conversations of Democracy</div>\r\n    <div class=\"controls\">\r\n\r\n\r\n        <div class=\"entry twitter\">\r\n            <div class=\"fa fa-chevron-circle-down twitter down\"></div>\r\n            <div class=\"title twitter\"><div>Twitter</div><div class=\"weight twitter\"></div> </div>\r\n            <div class=\"fa fa-chevron-circle-up  twitter up\"></div>\r\n\r\n\r\n        </div>\r\n\r\n        <div class=\"entry facebook\">\r\n            <div class=\"fa fa-chevron-circle-down facebook down\"></div>\r\n            <div class=\"title facebook\"><div>Facebook</div><div class=\"weight facebook\"></div> </div>\r\n            <div class=\"fa fa-chevron-circle-up  facebook up\"></div>\r\n\r\n        </div>\r\n\r\n        <div class=\"entry donations\">\r\n            <div class=\"fa fa-chevron-circle-down donations down\"></div>\r\n            <div class=\"title donations\"><div>Donations</div><div class=\"weight donations\"></div> </div>\r\n            <div class=\"fa fa-chevron-circle-up  donations up\"></div>\r\n\r\n        </div>\r\n\r\n        <div class=\"entry google\">\r\n            <div class=\"fa fa-chevron-circle-down google down\"></div>\r\n            <div class=\"title google\"><div>Google</div><div class=\"weight google\"></div> </div>\r\n            <div class=\"fa fa-chevron-circle-up  google up\"></div>\r\n\r\n        </div>\r\n\r\n    </div>\r\n    <div class=\"score\">\r\n        0\r\n    </div>\r\n\r\n</div>\r\n<div class=\"content-wrapper\">\r\n    <div class=\"story\">\r\n        <div class=\"date\"></div>\r\n        <div class=\"headline\"></div>\r\n    </div>\r\n\r\n    <div class=\"target pristine\"></div>\r\n\r\n</div>\r\n\r\n</body>\r\n\r\n</html>\r\n";
+	module.exports = "<!DOCTYPE html>\r\n<html>\r\n\r\n<head>\r\n    <!-- Meta Tag -->\r\n    <meta charset=\"utf-8\">\r\n\r\n    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700|Lato:300,300italic,400,400italic,700,700italic|Raleway:100,300,400,600,800'\r\n          rel='stylesheet' type='text/css'>\r\n    <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css\">\r\n\r\n\r\n    <link rel=\"stylesheet\" href=\"./styles.css\">\r\n\r\n</head>\r\n\r\n<body>\r\n<div class=\"top-bar\">\r\n    <div class=\"viz-title\">Conversations of Democracy</div>\r\n    <div class=\"controls\">\r\n\r\n\r\n        <div class=\"entry twitter\">\r\n            <div class=\"fa fa-chevron-circle-down twitter down\"></div>\r\n            <div class=\"title twitter\"><div>Twitter</div><div class=\"weight twitter\"></div> </div>\r\n            <div class=\"fa fa-chevron-circle-up  twitter up\"></div>\r\n\r\n\r\n        </div>\r\n\r\n        <div class=\"entry facebook\">\r\n            <div class=\"fa fa-chevron-circle-down facebook down\"></div>\r\n            <div class=\"title facebook\"><div>Facebook</div><div class=\"weight facebook\"></div> </div>\r\n            <div class=\"fa fa-chevron-circle-up  facebook up\"></div>\r\n\r\n        </div>\r\n\r\n        <div class=\"entry donations\">\r\n            <div class=\"fa fa-chevron-circle-down donations down\"></div>\r\n            <div class=\"title donations\"><div>Donations</div><div class=\"weight donations\"></div> </div>\r\n            <div class=\"fa fa-chevron-circle-up  donations up\"></div>\r\n\r\n        </div>\r\n\r\n        <div class=\"entry google\">\r\n            <div class=\"fa fa-chevron-circle-down google down\"></div>\r\n            <div class=\"title google\"><div>Google</div><div class=\"weight google\"></div> </div>\r\n            <div class=\"fa fa-chevron-circle-up  google up\"></div>\r\n\r\n        </div>\r\n\r\n    </div>\r\n    <div class=\"score\">\r\n        0\r\n    </div>\r\n\r\n</div>\r\n<div class=\"content-wrapper\">\r\n    <div class=\"story\">\r\n        <div class=\"date\"></div>\r\n        <div class=\"headline\" style=\"z-index:5000\"></div>\r\n    </div>\r\n\r\n    <div class=\"target pristine\"></div>\r\n\r\n</div>\r\n\r\n</body>\r\n\r\n</html>\r\n";
 
 /***/ },
 /* 10 */
@@ -36113,45 +36107,6 @@
 	    return entry ? entry.normValue : null;
 	}
 	exports.valueOnDate = valueOnDate;
-
-
-/***/ },
-/* 12 */
-/***/ function(module, exports) {
-
-	/*  modified from https://bl.ocks.org/mbostock/8027637   */
-	"use strict";
-	function closestPoint(pathNode, point) {
-	    var pathLength = pathNode.getTotalLength(), precision = 8, best, bestLength, bestDistance = Infinity;
-	    // linear scan for coarse approximation
-	    for (var scan, scanLength = 0, scanDistance; scanLength <= pathLength; scanLength += precision) {
-	        if ((scanDistance = distance2(scan = pathNode.getPointAtLength(scanLength))) < bestDistance) {
-	            best = scan, bestLength = scanLength, bestDistance = scanDistance;
-	        }
-	    }
-	    // binary search for precise estimate
-	    precision /= 2;
-	    while (precision > 0.5) {
-	        var before, after, beforeLength, afterLength, beforeDistance, afterDistance;
-	        if ((beforeLength = bestLength - precision) >= 0 && (beforeDistance = distance2(before = pathNode.getPointAtLength(beforeLength))) < bestDistance) {
-	            best = before, bestLength = beforeLength, bestDistance = beforeDistance;
-	        }
-	        else if ((afterLength = bestLength + precision) <= pathLength && (afterDistance = distance2(after = pathNode.getPointAtLength(afterLength))) < bestDistance) {
-	            best = after, bestLength = afterLength, bestDistance = afterDistance;
-	        }
-	        else {
-	            precision /= 2;
-	        }
-	    }
-	    best = [best.x, best.y];
-	    best.distance = Math.sqrt(bestDistance);
-	    return best;
-	    function distance2(p) {
-	        var dx = p.x - point[0], dy = p.y - point[1];
-	        return dx * dx + dy * dy;
-	    }
-	}
-	exports.closestPoint = closestPoint;
 
 
 /***/ }
