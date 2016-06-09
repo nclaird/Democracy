@@ -4,8 +4,11 @@ import { Selection } from 'd3';
 import * as _ from 'lodash';
 import './conversations.scss';
 import './index.html';
+import './data-final.json';
 import { Stream, Headline, SelectedComponent, StreamEntry, valueOnDate } from './models';
 import { closestPoint } from './functions';
+
+
 
 const target            = d3.select( '.target' ),
       dateDiv           = $( '.date' ),
@@ -46,6 +49,7 @@ const target            = d3.select( '.target' ),
       aggStream         = svg.append( 'g' )
                              .attr( 'class', 'aggregate stream' )
                              .append( 'path' );
+
 
 
 d3.json( './data-final.json', (error, rawData)=> {
