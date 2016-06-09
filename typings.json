@@ -1,0 +1,11 @@
+{
+  "name": "conversations",
+  "dependencies": {
+    "d3": "registry:npm/d3#3.0.0+20160211003958",
+    "lodash": "registry:npm/lodash#4.0.0+20160416211519"
+  },
+  "globalDependencies": {
+    "jasmine": "registry:dt/jasmine#2.2.0+20160505161446",
+    "jquery": "registry:dt/jquery#1.10.0+20160417213236"
+  }
+}
