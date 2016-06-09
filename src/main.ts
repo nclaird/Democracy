@@ -142,7 +142,14 @@ d3.json( './data-final.json', (error, rawData)=> {
  *  officialStream is what we're comparing it to
  */
 function calcLSR(officialStream: StreamEntry[], aggStream: StreamEntry[]){
-
+    var Variance = 0;
+    var singleVar = 0;
+    for(var inc = 0;inc<officialStream.length;inc++){
+    singleVar = officialStream[i].normValue + aggStream[i].normValue;
+    singleVar = singleVar * singleVar;
+    Variance = Variance + singleVar;
+    }
+    return(Variance);
   debugger;
 }
 
