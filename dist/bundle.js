@@ -114,7 +114,7 @@
 	        singleVar = singleVar * singleVar;
 	        Variance = Variance + singleVar;
 	    }
-	    return Math.round(Variance);
+	    return (100 - Variance).toFixed(2);
 	}
 	function genAddHandlerFxn(data, update) {
 	    return function (name) {
